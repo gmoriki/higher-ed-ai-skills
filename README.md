@@ -29,7 +29,8 @@
 
 | スキル | 説明 | Version |
 |---|---|---|
-| [confidential-info-guidelines](skills/confidential-info-guidelines/) | 生成AIに機密情報を入力してよいかを3レベル分類で判断する | 1.1.0 |
+| [confidential-info-guidelines](skills/confidential-info-guidelines/) | 生成AIに機密情報を入力してよいかを3レベル分類で判断する | 1.2.0 |
+| [ai-use-risk-classification](skills/ai-use-risk-classification/) | AI 利用を「禁止／限定／推奨／開放」の 4 区分で判定する | 1.0.0 |
 | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 新任職員向け AI リテラシー入門、SD 研修コア | 1.0.0 |
 | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 組織としての AI 導入検討チェックリストと成熟度モデル | 1.0.0 |
 | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 委員会・教授会議事録の AI 活用判断とツール選定 | 1.0.0 |
@@ -50,11 +51,20 @@
 
 | スキル | 備考 | 目標 |
 |---|---|---|
-| ai-report-evaluation | 機能の一部を v0.3 の `research-integrity-ai-disclosure` と `syllabus-ai-policy` に吸収。独立スキルは v0.4 で評価 | v0.4 |
-| tool-selection-guide | `institutional-ai-adoption-checklist` が機能の一部を吸収。独立スキルは v0.4 で評価 | v0.4 |
-| advanced-prompting-for-admin | `staff-ai-literacy-primer` と機能重複。統合または改称を v0.4 で判断 | v0.4 |
 | ai-news-curation | 情報源キュレーション | v0.5+ |
 | case-library-ai-usage | `case-studies/` ディレクトリの充実で代替 | v0.5+ |
+
+※ v0.3 で準備中だった `advanced-prompting-for-admin` / `ai-report-evaluation` / `tool-selection-guide` の 3 枠は v0.4 で非推奨化しました。詳細は下の「非推奨スキル」と [`deprecated/`](deprecated/) を参照。
+
+### 非推奨スキル（deprecated/）
+
+機能が既存スキルに吸収されたため非推奨となった枠を [`deprecated/`](deprecated/) に保存しています。
+
+| 非推奨スキル | 代替スキル |
+|---|---|
+| [advanced-prompting-for-admin](deprecated/advanced-prompting-for-admin/) | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) |
+| [ai-report-evaluation](deprecated/ai-report-evaluation/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) + [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) |
+| [tool-selection-guide](deprecated/tool-selection-guide/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
 
 ---
 
@@ -80,6 +90,20 @@
 3. **研修教材にする** — CC BY-SA 4.0 の範囲で改変・再配布できる
 
 詳しい手順は [docs/how-to-use.md](docs/how-to-use.md) を参照してください。GitHub アカウントがなくても利用できます。
+
+---
+
+## Runtime Adapters
+
+AI ランタイムごとの組み込み方法を [`runtime-adapters/`](runtime-adapters/) にまとめています。Claude Code 向けの初弾を v0.4 で追加しました。
+
+| ランタイム | ガイド | 状態 |
+|---|---|---|
+| Claude Code | [claude-code.md](runtime-adapters/claude-code.md) | v0.4 初弾 |
+| ChatGPT (Custom GPT) | — | v0.5+ 予定 |
+| Microsoft Copilot | — | v0.5+ 予定 |
+| GitHub Copilot | — | v0.5+ 予定 |
+| ローカル LLM | — | v0.5+ 予定 |
 
 ---
 
