@@ -27,7 +27,8 @@ This knowledge does not transfer naturally to AI prompts. This repository publis
 
 | Skill | Description | Version |
 |---|---|---|
-| [confidential-info-guidelines](skills/confidential-info-guidelines/) | A three-level classification framework for deciding whether confidential information can be fed into generative AI | 1.1.0 |
+| [confidential-info-guidelines](skills/confidential-info-guidelines/) | A three-level classification framework for deciding whether confidential information can be fed into generative AI | 1.2.0 |
+| [ai-use-risk-classification](skills/ai-use-risk-classification/) | Four-tier AI usage judgment (prohibited / limited / recommended / open) | 1.0.0 |
 | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | AI literacy primer for new admin staff, core material for SD training | 1.0.0 |
 | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | Checklist and maturity model for institutional AI adoption reviews | 1.0.0 |
 | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | Judgment and tool-selection framework for AI-assisted meeting minutes | 1.0.0 |
@@ -48,11 +49,20 @@ This knowledge does not transfer naturally to AI prompts. This repository publis
 
 | Skill | Note | Target |
 |---|---|---|
-| ai-report-evaluation | Partly absorbed by `research-integrity-ai-disclosure` and `syllabus-ai-policy` in v0.3. Standalone form re-evaluated in v0.4 | v0.4 |
-| tool-selection-guide | Partly absorbed by `institutional-ai-adoption-checklist`. Standalone form re-evaluated in v0.4 | v0.4 |
-| advanced-prompting-for-admin | Overlaps with `staff-ai-literacy-primer`. Merge or rename decided in v0.4 | v0.4 |
 | ai-news-curation | Information-source curation | v0.5+ |
 | case-library-ai-usage | Covered by expanded `case-studies/` directory | v0.5+ |
+
+※ The three slots previously listed as coming-soon (`advanced-prompting-for-admin` / `ai-report-evaluation` / `tool-selection-guide`) were deprecated in v0.4. See the "Deprecated skills" section below and [`deprecated/`](deprecated/).
+
+### Deprecated skills (deprecated/)
+
+Slots whose function has been absorbed by existing skills are preserved under [`deprecated/`](deprecated/).
+
+| Deprecated skill | Replacement |
+|---|---|
+| [advanced-prompting-for-admin](deprecated/advanced-prompting-for-admin/) | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) |
+| [ai-report-evaluation](deprecated/ai-report-evaluation/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) + [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) |
+| [tool-selection-guide](deprecated/tool-selection-guide/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
 
 ---
 
@@ -78,6 +88,20 @@ There are three common ways to use these skills.
 3. **Adapt them into training materials** — remix freely under CC BY-SA 4.0
 
 See [docs/how-to-use.md](docs/how-to-use.md) for details. No GitHub account is required.
+
+---
+
+## Runtime Adapters
+
+Integration guides for AI runtimes are under [`runtime-adapters/`](runtime-adapters/). Claude Code is the first adapter, added in v0.4.
+
+| Runtime | Guide | Status |
+|---|---|---|
+| Claude Code | [claude-code.md](runtime-adapters/claude-code.md) | v0.4 first release |
+| ChatGPT (Custom GPT) | — | v0.5+ planned |
+| Microsoft Copilot | — | v0.5+ planned |
+| GitHub Copilot | — | v0.5+ planned |
+| Local LLMs | — | v0.5+ planned |
 
 ---
 

@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-04-19
+
+### Added
+
+- **新規スキル**: `skills/ai-use-risk-classification/` — AI 使用を「禁止／限定／推奨／開放」の 4 区分で判定（上海交大 4 分類を骨格に再構築、`confidential-info-guidelines` の 3 段分類と直交する業務場面軸）
+- **Full 形拡張 3 件** (Lite → Full):
+  - `skills/confidential-info-guidelines/` 1.1.0 → 1.2.0 (SKILL.md 122→157 行、examples 3→4、§3.5 ファイル添付・§4.5 カスタム GPT/ナレッジ判断を追加)
+  - `domain-skills/academic-affairs/syllabus-ai-policy/` 1.0.0 → 1.1.0 (SKILL.md 137→180 行、examples 1→3、§4.6 学生周知文・§4.7 学科合意形成プロセスを追加)
+  - `domain-skills/research-support/research-integrity-ai-disclosure/` 1.0.0 → 1.1.0 (SKILL.md 149→209 行、examples 1→3、§4.5 検証プロトコルを追加、references に BMC/Cell Press/Oxford Academic/Cambridge Core/J-STAGE を追加)
+- **Runtime adapter**: `runtime-adapters/claude-code.md` (273 行) — Claude Code ユーザー向け組み込み手順書 (DESIGN.md §4.2 の初弾)
+- **`deprecated/` ディレクトリ** 新設、3 枠の README + 概要 README 計 4 ファイル
+
+### Changed
+
+- `README.md` / `README.en.md`: 横断スキル表に `ai-use-risk-classification` を追加、準備中表から 3 枠削除、「非推奨スキル」セクションと「Runtime Adapters」セクションを新設、`confidential-info-guidelines` の Version を 1.2.0 に更新
+- 既存 3 スキルのバージョン番号更新（frontmatter version、last_updated 継続）
+
+### Deprecated
+
+- `skills/advanced-prompting-for-admin/` → `deprecated/advanced-prompting-for-admin/` — 代替: `staff-ai-literacy-primer`
+- `skills/ai-report-evaluation/` → `deprecated/ai-report-evaluation/` — 代替: `research-integrity-ai-disclosure` + `syllabus-ai-policy`
+- `skills/tool-selection-guide/` → `deprecated/tool-selection-guide/` — 代替: `institutional-ai-adoption-checklist`
+
+### Removed
+
+- 旧 `skills/advanced-prompting-for-admin/` / `skills/ai-report-evaluation/` / `skills/tool-selection-guide/` の空ディレクトリスタブを削除（中身は deprecated/ へ移動）
+
 ## [0.3.0] - 2026-04-19
 
 ### Added
