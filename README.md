@@ -25,32 +25,36 @@
 
 ## 今使えるスキル
 
-### 実装済み
+### 横断スキル（skills/）
 
 | スキル | 説明 | Version |
 |---|---|---|
-| [**confidential-info-guidelines**](skills/confidential-info-guidelines/) | 生成AIに機密情報を入力してよいかを3レベル分類で判断する | 1.1.0 |
+| [confidential-info-guidelines](skills/confidential-info-guidelines/) | 生成AIに機密情報を入力してよいかを3レベル分類で判断する | 1.1.0 |
+| [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 新任職員向け AI リテラシー入門、SD 研修コア | 1.0.0 |
+| [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 組織としての AI 導入検討チェックリストと成熟度モデル | 1.0.0 |
+| [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 委員会・教授会議事録の AI 活用判断とツール選定 | 1.0.0 |
+
+### 業務領域別スキル（domain-skills/）
+
+| 領域 | スキル | 説明 |
+|---|---|---|
+| [academic-affairs](domain-skills/academic-affairs/) | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | シラバス AI 方針の 4 段階テンプレート |
+| academic-affairs | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | 入試書類の AI 使用可否と検知対応 |
+| [international-office](domain-skills/international-office/) | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | 留学生向け多言語化の判断と運用 |
+| [ir-analysis](domain-skills/ir-analysis/) | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | 学生調査の自由記述 AI 分析ワークフロー |
+| [public-relations](domain-skills/public-relations/) | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | 広報原稿 AI 利用 7 点チェック |
+| [research-support](domain-skills/research-support/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 論文・学位論文・科研費の AI 開示判断 |
+| [student-support](domain-skills/student-support/) | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 学生問い合わせの AI／有人対応振り分け |
 
 ### 準備中
 
-| スキル | 説明 | 目標リリース |
+| スキル | 備考 | 目標 |
 |---|---|---|
-| ai-report-evaluation | AI生成レポートの評価基準と検証手順 | v0.3 |
-| tool-selection-guide | 大学業務向けAIツールの選定チェックリスト | v0.3 |
-| advanced-prompting-for-admin | 大学事務向けの応用プロンプト集 | v0.4 |
-| ai-news-curation | 大学×AI領域の情報収集・キュレーション手法 | v0.4 |
-| case-library-ai-usage | 他大学のAI活用事例ライブラリ | v0.5 |
-
-### 業務領域別スキル
-
-以下の領域ごとにディレクトリを用意しています。v0.3 以降に順次公開予定です。
-
-- [academic-affairs](domain-skills/academic-affairs/) — 学務・教務
-- [international-office](domain-skills/international-office/) — 国際
-- [ir-analysis](domain-skills/ir-analysis/) — IR・データ分析
-- [public-relations](domain-skills/public-relations/) — 広報
-- [research-support](domain-skills/research-support/) — 研究支援
-- [student-support](domain-skills/student-support/) — 学生支援
+| ai-report-evaluation | 機能の一部を v0.3 の `research-integrity-ai-disclosure` と `syllabus-ai-policy` に吸収。独立スキルは v0.4 で評価 | v0.4 |
+| tool-selection-guide | `institutional-ai-adoption-checklist` が機能の一部を吸収。独立スキルは v0.4 で評価 | v0.4 |
+| advanced-prompting-for-admin | `staff-ai-literacy-primer` と機能重複。統合または改称を v0.4 で判断 | v0.4 |
+| ai-news-curation | 情報源キュレーション | v0.5+ |
+| case-library-ai-usage | `case-studies/` ディレクトリの充実で代替 | v0.5+ |
 
 ---
 
@@ -59,6 +63,8 @@
 | あなたが | 最初に開くべき |
 |---|---|
 | 大学職員で、実務で使いたい | [confidential-info-guidelines](skills/confidential-info-guidelines/SKILL.md) |
+| 導入検討委員会の資料を作りたい | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/SKILL.md) |
+| 新任 SD 研修を組みたい | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/SKILL.md) |
 | コンサルタントや研究者 | [DESIGN.md](DESIGN.md) |
 | 英語で読みたい | [README.en.md](README.en.md) |
 | GitHub に慣れていない | [docs/how-to-use.md](docs/how-to-use.md) |

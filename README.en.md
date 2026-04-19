@@ -23,32 +23,36 @@ This knowledge does not transfer naturally to AI prompts. This repository publis
 
 ## Available skills
 
-### Ready to use
+### Cross-cutting skills (skills/)
 
 | Skill | Description | Version |
 |---|---|---|
-| [**confidential-info-guidelines**](skills/confidential-info-guidelines/) | A three-level classification framework for deciding whether confidential information can be fed into generative AI | 1.1.0 |
+| [confidential-info-guidelines](skills/confidential-info-guidelines/) | A three-level classification framework for deciding whether confidential information can be fed into generative AI | 1.1.0 |
+| [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | AI literacy primer for new admin staff, core material for SD training | 1.0.0 |
+| [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | Checklist and maturity model for institutional AI adoption reviews | 1.0.0 |
+| [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | Judgment and tool-selection framework for AI-assisted meeting minutes | 1.0.0 |
+
+### Domain-specific skills (domain-skills/)
+
+| Domain | Skill | Description |
+|---|---|---|
+| [academic-affairs](domain-skills/academic-affairs/) | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | Four-level syllabus AI-policy template |
+| academic-affairs | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | Admissions document AI usage and detection handling |
+| [international-office](domain-skills/international-office/) | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | Multilingual communication for international students |
+| [ir-analysis](domain-skills/ir-analysis/) | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | Free-form student-survey text analysis workflow |
+| [public-relations](domain-skills/public-relations/) | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | Seven-point AI-use checklist for PR copy |
+| [research-support](domain-skills/research-support/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | AI-use disclosure judgment for papers, theses, and grants |
+| [student-support](domain-skills/student-support/) | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | AI vs human triage for student inquiries |
 
 ### Coming soon
 
-| Skill | Description | Target |
+| Skill | Note | Target |
 |---|---|---|
-| ai-report-evaluation | Evaluation criteria and verification steps for AI-generated reports | v0.3 |
-| tool-selection-guide | An AI tool selection checklist for university operations | v0.3 |
-| advanced-prompting-for-admin | Applied prompt library for administrative work | v0.4 |
-| ai-news-curation | Curation methods for the higher ed × AI information landscape | v0.4 |
-| case-library-ai-usage | Library of AI adoption cases from other universities | v0.5 |
-
-### Domain-specific skills
-
-Directories are reserved under [`domain-skills/`](domain-skills/) for each department. Content will be published from v0.3 onward.
-
-- [academic-affairs](domain-skills/academic-affairs/)
-- [international-office](domain-skills/international-office/)
-- [ir-analysis](domain-skills/ir-analysis/)
-- [public-relations](domain-skills/public-relations/)
-- [research-support](domain-skills/research-support/)
-- [student-support](domain-skills/student-support/)
+| ai-report-evaluation | Partly absorbed by `research-integrity-ai-disclosure` and `syllabus-ai-policy` in v0.3. Standalone form re-evaluated in v0.4 | v0.4 |
+| tool-selection-guide | Partly absorbed by `institutional-ai-adoption-checklist`. Standalone form re-evaluated in v0.4 | v0.4 |
+| advanced-prompting-for-admin | Overlaps with `staff-ai-literacy-primer`. Merge or rename decided in v0.4 | v0.4 |
+| ai-news-curation | Information-source curation | v0.5+ |
+| case-library-ai-usage | Covered by expanded `case-studies/` directory | v0.5+ |
 
 ---
 
@@ -57,6 +61,8 @@ Directories are reserved under [`domain-skills/`](domain-skills/) for each depar
 | If you are | Start here |
 |---|---|
 | University staff looking for practical use | [confidential-info-guidelines](skills/confidential-info-guidelines/SKILL.md) |
+| Preparing an AI adoption committee | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/SKILL.md) |
+| Building an SD training for new staff | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/SKILL.md) |
 | A consultant or researcher | [DESIGN.md](DESIGN.md) |
 | A Japanese reader | [README.md](README.md) |
 | New to GitHub | [docs/how-to-use.md](docs/how-to-use.md) |
