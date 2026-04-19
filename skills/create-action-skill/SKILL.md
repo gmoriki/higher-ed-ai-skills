@@ -165,6 +165,9 @@ license: CC BY-SA 4.0
 ## 6. Limitations
 {Q5 を整理}
 
+## 依存スキル / 関連スキル
+{他の skill を参照する場合は `[label](../skill-name/SKILL.md)` の Markdown link 形式で記述。例: 機密情報判定が必要なら [`skills/confidential-info-guidelines/`](../confidential-info-guidelines/SKILL.md) を参照、等。無ければセクション削除}
+
 ## References
 {Q9 を分類して列挙、ライセンス警告適用済み}
 ```
@@ -174,10 +177,11 @@ license: CC BY-SA 4.0
 ```markdown
 ---
 name: {kebab-case}
-description: {Q2 から生成、Use when... 形式推奨}
+description: {Q2 から生成。自然発話を 2-3 個埋め込み「…と問われた時に起動する」で締める。例: skills/check-info-level/SKILL.md の description を参照}
 when_to_use: {Q2 の発話例 3 つ}
 argument-hint: {Q3' から推定}
-{Q7' で副作用ありなら} disable-model-invocation: true
+{オプション行: Q7' で副作用ありの場合のみ次行を追加}
+disable-model-invocation: true
 allowed-tools: {Q6' から生成。Bash 引数はコロン構文 (例: Bash(git status:*))。複数 entry はスペース区切り}
 ---
 
