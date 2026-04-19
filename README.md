@@ -129,7 +129,7 @@ AI ランタイムごとの組み込み方法を [`runtime-adapters/`](runtime-a
 
 ## 関連ドキュメント
 
-- [DESIGN.md](DESIGN.md) — 設計思想と5原則
+- [DESIGN.md](DESIGN.md) — 設計思想と6原則
 - [CONTRIBUTING.md](CONTRIBUTING.md) — 貢献ガイド
 - [CHANGELOG.md](CHANGELOG.md) — 変更履歴
 - [docs/update-policy.md](docs/update-policy.md) — スキルの更新ポリシー
