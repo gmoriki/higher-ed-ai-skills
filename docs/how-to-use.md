@@ -1,5 +1,21 @@
 # skill.md の使い方ガイド / How to Use skill.md
 
+## GitHubアカウント不要で使う方法 / No GitHub account needed
+
+このリポジトリのスキルは、GitHubアカウントがなくても利用できます。
+
+**ブラウザで直接読む:**
+1. 使いたいスキルのページ（例: [SKILL.md](https://github.com/gmoriki/higher-ed-ai-skills/blob/main/skills/confidential-info-guidelines/SKILL.md)）をブラウザで開く
+2. ページ右上の「Raw」ボタンを押すと、プレーンテキストとしてコピー可能
+3. コピーしたテキストを ChatGPT、Claude、Microsoft Copilot などに貼り付けて使う
+
+**ダウンロードして使う:**
+- リポジトリトップの緑色の「Code」ボタン → 「Download ZIP」で全ファイルをダウンロード
+- ZIPを展開すれば、オフラインでも参照可能
+
+**もしGitHubの操作に迷ったら:**
+最も確実な方法は、SKILL.md の内容をそのまま AIアシスタント（Claude、ChatGPT等）のチャット欄に貼り付けて、「このフレームワークを使って、〇〇について判断して」と質問することです。
+
 ## skill.md とは
 
 skill.md は、大学業務におけるAI活用の知見を**構造化された1ファイル**に凝縮したフォーマットです。各スキルは以下の3層構造で構成されています。
