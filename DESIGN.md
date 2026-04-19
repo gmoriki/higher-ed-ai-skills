@@ -10,7 +10,7 @@
 ## 目次
 
 1. [なぜ大学業務のAI活用は"翻訳"が必要なのか](#1-なぜ大学業務のai活用は翻訳が必要なのか)
-2. [skill.md 設計の5原則（森木版）](#2-skillmd-設計の5原則森木版)
+2. [skill.md 設計の6原則（森木版）](#2-skillmd-設計の6原則森木版)
 3. [大学業務固有の注意点](#3-大学業務固有の注意点)
 4. [ランタイム非依存の思想](#4-ランタイム非依存の思想)
 5. [更新と陳腐化との戦い方](#5-更新と陳腐化との戦い方)
@@ -43,9 +43,9 @@ AIにこれらの業務を支援させたいと考えたとき、最初に直面
 
 ---
 
-## 2. skill.md 設計の5原則（森木版）
+## 2. skill.md 設計の6原則（森木版）
 
-本リポジトリにおけるスキル設計は、以下の5つの原則に基づく。
+本リポジトリにおけるスキル設計は、以下の6つの原則に基づく。
 
 ### 原則1: Progressive Disclosure（段階的開示）
 
@@ -108,6 +108,22 @@ AIサービスの仕様変更、法改正、大学を取り巻く環境の変化
 - `last_updated`: 最終更新日
 
 更新ポリシーの詳細は第5章および `docs/update-policy.md` で述べる。
+
+### 原則6: Reference content と Task content の区別（v0.5 追加）
+
+Anthropic 公式 Claude Code Skills は、SKILL.md の content type を 2 つに区別している:
+
+- **Reference content**: 判断フレームワーク / 規程 / ドメイン知識。AI が文脈で参照し、人間に判断材料を返す
+- **Task content**: 手順実行型。AI がステップを踏んで成果物を返す。スラッシュコマンドで明示起動するのが typical
+
+本リポジトリの v0.1〜v0.4 で蓄積した 12 SKILL.md はすべて Reference content である。v0.5 から、Reference layer を温存しつつ Task layer を `skills/check-info-level/` 等として並立配置する。両層は独立して invoke 可能だが、Task layer から Reference layer の判断基準を参照する依存関係を明示する（例: `/check-info-level` は内部で `confidential-info-guidelines` の 3 段分類を参照する）。
+
+設計判断のチェック:
+
+- 新規スキルが「ユーザーに判断軸を伝える」目的なら Reference layer に、「ユーザーに代わって判定 / 生成する」目的なら Task layer に
+- Task layer は frontmatter に `when_to_use`, `argument-hint`, `allowed-tools`, 必要に応じ `disable-model-invocation` を追加する
+- Reference layer は既存の `version`, `last_updated`, `author`, `license` を維持する
+- 両 layer に同じ業務領域の skill が必要な場合、互いをリンクする（依存関係を SKILL.md 末尾に明記）
 
 ---
 

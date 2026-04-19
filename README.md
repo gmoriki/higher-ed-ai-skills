@@ -21,6 +21,8 @@
 
 本リポジトリは、大学現場で積み上げた判断フレームワークを skill.md 形式で公開するものです。誰でも再利用できる形に整えてあります。
 
+v0.5 から、スキルは **Reference layer**（判断フレームワーク文書、AI が読んで人間に判断材料を返す）と **Task layer**（AI が手順を実行して成果物を返す Action skill、スラッシュコマンドで起動）の二層構造になっています。Anthropic 公式 Claude Code Skills の Reference content / Task content 二類型に整合します。
+
 ---
 
 ## 今使えるスキル
@@ -46,6 +48,15 @@
 | [public-relations](domain-skills/public-relations/) | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | 広報原稿 AI 利用 7 点チェック |
 | [research-support](domain-skills/research-support/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 論文・学位論文・科研費の AI 開示判断 |
 | [student-support](domain-skills/student-support/) | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 学生問い合わせの AI／有人対応振り分け |
+
+### Task layer スキル（v0.5 新規）
+
+AI が手順を実行して成果物を返す Action skill。スラッシュコマンド `/skill-name` で起動できる。
+
+| スキル | コマンド | 説明 |
+|---|---|---|
+| [check-info-level](skills/check-info-level/) | `/check-info-level [text or file]` | 渡されたテキスト / ファイルを Level 1/2/3 判定し、AI 入力可否と推奨次アクションを返す |
+| [create-action-skill](skills/create-action-skill/) | `/create-action-skill` | 自分の暗黙知を対話ヒアリングで SKILL.md（Reference / Task）に変換するメタスキル |
 
 ### 準備中
 
@@ -83,11 +94,12 @@
 
 ## 使い方
 
-主な使い方は3つあります。
+主な使い方は4つあります。
 
-1. **そのまま読む** — SKILL.md を開き、判断フローに沿って業務判断に使う
-2. **AIアシスタントに読ませる** — Claude、ChatGPT、Microsoft Copilot などの指示文やナレッジに貼り付ける
-3. **研修教材にする** — CC BY-SA 4.0 の範囲で改変・再配布できる
+1. **そのまま読む**（Reference layer 向け） — SKILL.md を開き、判断フローに沿って業務判断に使う
+2. **AIアシスタントに読ませる**（Reference layer 向け） — Claude、ChatGPT、Microsoft Copilot などの指示文やナレッジに貼り付ける
+3. **スラッシュコマンドで起動する**（Task layer 向け） — Claude Code に組み込み、`/check-info-level <path>` のように直接呼び出して成果物を得る
+4. **研修教材にする** — CC BY-SA 4.0 の範囲で改変・再配布できる
 
 詳しい手順は [docs/how-to-use.md](docs/how-to-use.md) を参照してください。GitHub アカウントがなくても利用できます。
 
@@ -117,7 +129,7 @@ AI ランタイムごとの組み込み方法を [`runtime-adapters/`](runtime-a
 
 ## 関連ドキュメント
 
-- [DESIGN.md](DESIGN.md) — 設計思想と5原則
+- [DESIGN.md](DESIGN.md) — 設計思想と6原則
 - [CONTRIBUTING.md](CONTRIBUTING.md) — 貢献ガイド
 - [CHANGELOG.md](CHANGELOG.md) — 変更履歴
 - [docs/update-policy.md](docs/update-policy.md) — スキルの更新ポリシー

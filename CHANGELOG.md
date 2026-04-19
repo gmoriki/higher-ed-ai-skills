@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-04-19
+
+### Added
+
+- **Task layer 導入**: Anthropic 公式 Claude Code Skills の Task content 仕様に準拠した Action skill 群を `skills/` 直下に追加
+  - `check-info-level/` ─ confidential-info-guidelines を内部参照する Action 版
+  - `create-action-skill/` ─ ユーザーの暗黙知を対話で SKILL.md 化するメタスキル
+- DESIGN.md に「原則 6: Reference content と Task content の区別」を追加
+- runtime-adapters/claude-code.md に §1.5「Reference layer と Task layer の使い分け」を追加
+- README.md に Task layer スキル一覧表と「スラッシュコマンドで起動する」使い方パターンを追加
+
+### Changed
+
+- README.md「これは何か」「使い方」を Reference + Task 二層化に対応した記述に更新
+
 ## [0.4.0] - 2026-04-19
 
 ### Added
