@@ -83,13 +83,56 @@
 
 ---
 
-## 9. 日本語系ジャーナル
+## 9. BMC (BioMed Central)
+
+- **公式ポリシー**: https://www.biomedcentral.com/getpublished/editorial-policies
+- **著者資格**: AI ツールを著者にすることは不可
+- **開示要件**: 投稿システムのチェックボックス方式で AI 使用を申告。本文（Methods または Acknowledgments）で詳細記載
+- **画像生成 AI**: 科学的図表への AI 使用は禁止方向。例外時は明示的開示
+- **査読における AI 利用**: 査読原稿は機密情報のため AI へのアップロード禁止
+- **特徴**: オープンアクセス誌が多く、投稿システム上での開示フローが整備されている
+
+---
+
+## 10. Cell Press
+
+- **公式ポリシー**: https://www.cell.com/cell-reports-medicine/authors
+- **著者資格**: AI は著者になれない
+- **開示要件**: Methods 内に AI 使用箇所を明記。使用ツール名・バージョン・使用目的を記載
+- **画像生成 AI**: 科学的データの改変懸念から原則禁止
+- **査読における AI 利用**: 守秘義務違反として禁止
+- **特徴**: Cell 本誌から Cell Reports 系列まで、同一グループで統一ポリシー
+
+---
+
+## 11. Oxford Academic
+
+- **公式ポリシー**: https://academic.oup.com/journals/pages/authors
+- **著者資格**: AI ツールは著者になれない
+- **開示要件**: Methods または Acknowledgments で使用箇所を開示
+- **画像生成 AI**: 明示的開示が必要
+- **査読における AI 利用**: 査読原稿のアップロード禁止
+
+---
+
+## 12. Cambridge Core (Cambridge University Press)
+
+- **公式ポリシー**: https://www.cambridge.org/core/services/authors/publishing-ethics
+- **著者資格**: AI ツールは著者になれない
+- **開示要件**: 執筆過程での AI 使用は Acknowledgments または Methods で記載
+- **画像生成 AI**: 科学コンテンツでは原則禁止、人文社会系では個別判断
+- **査読における AI 利用**: 機密性保持のため禁止
+
+---
+
+## 13. 日本語系ジャーナル
 
 日本語系ジャーナルは 2026 年時点で AI 使用ポリシーが個別に定められているところが増えつつある。学会誌ごとに方針が異なるため、投稿前に以下を確認:
 
 - 学会・出版会のウェブサイトでの明示的ポリシー
 - 投稿規程の改訂履歴（2024 年以降の改訂に注意）
 - 編集委員会への事前照会（ポリシーが明示されていない場合）
+- J-STAGE (https://www.jstage.jst.go.jp/) 搭載誌は、各学会が個別にポリシーを設定。搭載誌一覧から投稿先誌の投稿規程を確認すること
 
 ---
 
