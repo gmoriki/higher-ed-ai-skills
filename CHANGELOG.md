@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-04-19
+
+### Added
+
+- **10 new skills (Lite form)**, expanding catalog from 1 to 11:
+  - `skills/staff-ai-literacy-primer/` — 新任職員向け AI リテラシー入門
+  - `skills/institutional-ai-adoption-checklist/` — 組織導入検討チェックリスト
+  - `skills/committee-meeting-minutes-ai/` — 委員会議事録 AI 化
+  - `domain-skills/academic-affairs/syllabus-ai-policy/` — シラバス AI 方針
+  - `domain-skills/academic-affairs/entrance-exam-ai-policy/` — 入試 AI 対応
+  - `domain-skills/international-office/multilingual-student-communication/` — 留学生多言語化
+  - `domain-skills/ir-analysis/ir-freeform-text-analysis/` — IR 自由記述分析
+  - `domain-skills/public-relations/pr-ai-checklist/` — 広報 7 点チェック
+  - `domain-skills/research-support/research-integrity-ai-disclosure/` — 研究 AI 開示
+  - `domain-skills/student-support/student-inquiry-triage/` — 学生問い合わせトリアージ
+- **全 6 領域 `domain-skills/` ディレクトリ**に最低 1 件ずつスキルを配置
+- 4 references ファイル (`sample-syllabus-wording`, `journal-policy-overview`, `tool-overview-table`, `workflow-steps`)
+- 10 example ファイル (`examples/example-01-*.md`、1 件/スキル)
+
+### Changed
+
+- `README.md` / `README.en.md`: 実装済みスキル表を 11 件に拡張、横断／領域別サブセクション構造を導入、読者別の最短ルートに新スキルへの入口を追加
+- 準備中スキルの注記更新（v0.3 新スキルとの吸収関係を明示）
+
+### Note
+
+- v0.3 の 10 新スキルはすべて Lite 形（SKILL.md 80-150 行 + example 1 件）。Full 形への拡張（examples 増強・references 充実）は各スキルの成熟度に応じて v0.4 以降で対応する。
+- ソース調査は日英中 3 言語圏 + X の計 113 候補から統合（research/ は .gitignore で除外済み、公開リポジトリには含まれない）。CC BY-SA 4.0 互換を確保するため、各 SKILL.md は「複数ソースに着想を得たオリジナル日本語」として書き下ろし、非互換ソースは構造のみ参照。
+
 ## [0.2.1] - 2026-04-19
 
 ### Changed
