@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-04-19
+
+### Changed
+
+- **README.md / README.en.md 可読性の抜本的改善**:
+  - 日英インライン併記（`What is this? / これは何か` 型）を全面廃止。各言語ファイルで完結させ、冒頭の1行リンクで切替する方式に変更。GitHub 主要ドキュメント集リポジトリ13件の慣例に合わせた。
+  - 著者情報を冒頭から末尾へ移動。awesome系、anthropics、microsoft など主要リポジトリの定石に合わせる。
+  - 一文の長さを60字以内に短縮。読点は1文あたり2個以内に抑制。
+  - 全角括弧 `（）` と鉤括弧 `「」` を本文からゼロに削減（従来は約20箇所）。英名併記・連続する名詞列挙・抽象概念の強調を箇条書きや太字に置き換えた。
+  - 暗黙知の例を段落内列挙から箇条書きに変更。
+
 ## [0.2.0] - 2026-04-19
 
 ### Changed
