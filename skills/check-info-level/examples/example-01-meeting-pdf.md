@@ -9,8 +9,8 @@
 ## skill の処理
 
 1. `Read` で PDF 本文を抽出
-2. `Bash(file <path>)` で MIME 確認 → application/pdf
-3. `Bash(pdfinfo <path>)` でメタデータ取得 → 作成者: 田中太郎、更新者: 山田花子
+2. `Bash(file:*)` で MIME 確認 → application/pdf
+3. `Bash(pdfinfo:*)` でメタデータ取得 → 作成者: 田中太郎、更新者: 山田花子
 4. 本文評価:
    - 出席教員 15 名の発言記録（氏名あり）
    - 次年度カリキュラム改編（未確定）
@@ -39,7 +39,7 @@
 - PDF メタデータに作成者「田中太郎」、最終更新者「山田花子」が残存。本文を匿名化しても、ファイル属性から作成者が特定される可能性がある。テキスト抽出してから入力を推奨
 - 30 ページの PDF 全体に複数議題が混在している可能性。要約目的でも全文を渡すと、AI は人事議事も要約に含めてしまう
 
-**根拠:** `skills/confidential-info-guidelines/SKILL.md` §3, §3.5
+**根拠:** [`skills/confidential-info-guidelines/SKILL.md`](../../confidential-info-guidelines/SKILL.md) §3, §3.5
 ```
 
 ## なぜこの応答が適切か

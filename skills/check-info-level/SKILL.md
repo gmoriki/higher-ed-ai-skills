@@ -3,7 +3,7 @@ name: check-info-level
 description: 大学業務で AI に入力しようとする情報を Level 1/2/3 に判定し、入力可否と推奨次アクションを返す。「この資料を AI に入れて大丈夫？」「議事録を要約させたいが機密度は？」と問われた時、または職員がファイル / テキストを共有して AI 利用可否判断を求めた時に起動する。
 when_to_use: ユーザーが「これ AI に入れていい？」「機密度を判定して」「Level は？」と問うた時、ファイル / テキストを示して AI 入力前の確認を求めた時、議事録 / 申請書 / 学生データ等を AI で処理する前段に呼ぶ
 argument-hint: [text or file path]
-allowed-tools: Read Bash(file *) Bash(pdfinfo *)
+allowed-tools: Read Bash(file:*) Bash(pdfinfo:*)
 ---
 
 # check-info-level
@@ -12,7 +12,7 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
 
 ## What This Does
 
-ユーザーが提示したテキストまたはファイル（PDF / Word / Excel / 画像）を読み取り、`skills/confidential-info-guidelines/` の 3 段分類（Level 1: 公開 / Level 2: 学内限定 / Level 3: 機密）に判定する。判定結果と理由、推奨される次アクション（そのまま入力可 / Enterprise 契約下で可 / 匿名化必要 / 入力断念）を構造化して返す。
+ユーザーが提示したテキストまたはファイル（PDF / 画像 / プレーンテキスト）を読み取り、`skills/confidential-info-guidelines/` の 3 段分類（Level 1: 公開 / Level 2: 学内限定 / Level 3: 機密）に判定する。判定結果と理由、推奨される次アクション（そのまま入力可 / Enterprise 契約下で可 / 匿名化必要 / 入力断念）を構造化して返す。
 
 ファイルアップロード時は `confidential-info-guidelines §3.5` のメタデータ・EXIF・OCR リスクも合わせて確認し、警告を返す。
 
@@ -21,7 +21,7 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
 `$ARGUMENTS` として以下のいずれかを受け取る:
 
 - **テキスト直貼り**: 文面そのものを引数に渡す（短文向け）
-- **ファイルパス**: ローカルの PDF / docx / xlsx / 画像のパス（長文・添付物向け）
+- **ファイルパス**: ローカルの PDF / 画像 / プレーンテキストファイルのパス（長文・添付物向け）
 - **複数行テキスト**: 改行を含む長文（チャット履歴 / 議事録 etc）
 
 引数なしで起動された場合: 「判定対象を貼り付けるか、ファイルパスを指定してください」と返して終了。
@@ -42,7 +42,7 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
    - メタデータ残存リスク（作成者名、トラックチェンジ、EXIF）
    - OCR で別議題が読み取られるリスク
    - 添付保存ポリシーの確認推奨
-6. **判断の根拠 skill**: `skills/confidential-info-guidelines/SKILL.md` §3 / §3.5 への参照リンク
+6. **判断の根拠 skill**: [`skills/confidential-info-guidelines/`](../confidential-info-guidelines/SKILL.md) §3 / §3.5 への参照リンク
 
 ## 手順
 
@@ -50,13 +50,13 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
 
 `$ARGUMENTS` を解析する:
 
-- ファイルパスらしき文字列（拡張子 `.pdf`, `.docx`, `.xlsx`, `.png`, `.jpg` を含む、または絶対パスで始まる）→ ファイル処理へ
+- ファイルパスらしき文字列（拡張子 `.pdf`, `.png`, `.jpg`, `.txt`, `.md` を含む、または絶対パスで始まる）→ ファイル処理へ。Office バイナリ (.docx / .xlsx) は v0.5 範囲外。利用者にテキスト抽出後の再投入を案内する
 - それ以外 → テキスト処理へ
 - 引数空 → ガイダンスを返して終了
 
 ### 2. ファイル処理（ファイル入力時のみ）
 
-- `Read` ツールでファイル本文を読む（PDF は内部抽出、画像は無視 = OCR は呼ばない）
+- `Read` ツールでファイル本文を読む（PDF は内部抽出。画像は Claude の視覚認識で記述を取得し、本文として扱う。OCR ツールは呼ばない）
 - `Bash(file <path>)` で MIME type を確認
 - PDF の場合 `Bash(pdfinfo <path>)` で作成者 / 作成日時 / ページ数を取得
 - メタデータに人名 / 部署名らしき文字列があれば警告フラグを立てる
@@ -113,7 +113,7 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
 **ファイル固有警告:**（ファイル入力時のみ）
 - [警告項目]
 
-**根拠:** `skills/confidential-info-guidelines/SKILL.md` §3, §3.5
+**根拠:** [`skills/confidential-info-guidelines/SKILL.md`](../confidential-info-guidelines/SKILL.md) §3, §3.5
 ```
 
 ### 7. 迷い / 判断保留時の挙動
@@ -131,9 +131,9 @@ allowed-tools: Read Bash(file *) Bash(pdfinfo *)
 ## Available Tools
 
 - **Read**: ファイル本文の読み込み
-- **Bash(file *)**: MIME type 確認
-- **Bash(pdfinfo *)**: PDF メタデータ取得
+- **Bash(file:*)**: MIME type 確認
+- **Bash(pdfinfo:*)**: PDF メタデータ取得
 
 ## 依存スキル
 
-- `skills/confidential-info-guidelines/` ─ 3 段分類の定義、§3.5 ファイル固有リスク、§4.5 カスタム GPT リスクを参照する。同 skill が同じ skills/ 配下に配置されていることを前提とする
+- [`skills/confidential-info-guidelines/`](../confidential-info-guidelines/SKILL.md) ─ 3 段分類の定義、§3.5 ファイル固有リスク、§4.5 カスタム GPT リスクを参照する。同 skill が同じ skills/ 配下に配置されていることを前提とする
