@@ -125,6 +125,33 @@ Anthropic 公式 Claude Code Skills は、SKILL.md の content type を 2 つに
 - Reference layer は既存の `version`, `last_updated`, `author`, `license` を維持する
 - 両 layer に同じ業務領域の skill が必要な場合、互いをリンクする（依存関係を SKILL.md 末尾に明記）
 
+### 原則7: skill 文書フォーマット標準（v0.6 追加）
+
+本リポジトリの SKILL.md は `references/skill-format-guide.md` で定める標準形式に従う。詳細は同ガイドに集約、本節は要約のみ示す。
+
+**核となる 3 点:**
+
+- **description は発話 trigger 記述**: ユーザー発話 / 業務シーンを含めて書く。機能説明調は避ける
+- **固定節構成**: `# <skill 名> → 1-3 文の mission → ## いつ使うか (+ 使わない場面) → <中核節> → ## 落とし穴 → ## 関連` を基本骨格とする。節番号は廃止 (`## 1. Overview` ではなく意味ある節タイトル)
+- **落とし穴節が必須**: 利用者 (AI / 人間) の合理化カタログを 2 列表で示す。「〜と思った瞬間」を止めるプロトコルとして機能
+
+**Reference / Task の差分:**
+
+- Task skill は `when_to_use` / `argument-hint` / `allowed-tools` を frontmatter に追加、本文に `What This Does / Required Inputs / What It Produces / 手順 / 品質基準 / Available Tools` を含む (Anthropic 公式 Task content 慣習)
+- Reference skill は `判断軸 / フレームワーク / 前提確認 / 限界` 等を中核に
+
+**トーン:**
+
+- 冗長敬語 / 空虚強調 / 両論併記 / 章冒頭前章要約 / 結論部の繰り返し を削る
+- 口語 / 絵文字 / 個人名義の主観は入れない (大学公式利用を想定)
+- 参考元 (mizchi skills 集) の水準を 70-80% に寄せる「学術行政文体の AI 臭削減版」
+
+**移行方針:**
+
+既存 skill は半期改訂 (3 月末 / 9 月末) または Full 形化タイミングで順次移行。v0.6 では `check-info-level` / `confidential-info-guidelines` を先行改修。新旧混在は過渡的正常状態として許容する。
+
+詳細と移行チェックリストは `references/skill-format-guide.md` を参照。
+
 ---
 
 ## 3. 大学業務固有の注意点

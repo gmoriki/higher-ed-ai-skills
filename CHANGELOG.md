@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-04-20
+
+### Added
+
+- **SKILL.md 文書フォーマット標準の策定**: `references/skill-format-guide.md` を新設。`github.com/mizchi/chezmoi-dotfiles/dot_claude/skills` を参照し、AI 主読 × 人間可読を両立する固定節構成（mission / いつ使うか / 中核節 / 落とし穴 / 関連）を定義
+- **DESIGN.md §2 に原則 7「skill 文書フォーマット」を追加** — skill-format-guide への誘導と段階移行方針を明記
+- **`skills/ai-tone-check/` 新規追加（Task layer）** — 大学業務文書（広報原稿 / 研修教材 / 学生向け案内）の「業務文書適切性 / AI 臭度 / 読者負荷」を subagent dispatch で 3 軸判定。`/ai-tone-check [draft] [staff|student|public]` で起動
+- `skills/ai-tone-check/examples/` に広報原稿・研修教材の評価サンプル 2 件を追加
+
+### Changed
+
+- **`skills/check-info-level/SKILL.md` を新フォーマットに改修（v1.0 → v1.1.0）** — 「いつ使うか」「落とし穴」「関連」節を新設、description を trigger 記述に拡張、判定ロジックは維持
+- **`skills/confidential-info-guidelines/SKILL.md` を新フォーマットに改修（v1.2.0 → v1.3.0）** — Overview を 3 段落から 1 段落 mission に圧縮、節番号を廃止、「落とし穴」節（8 項目の合理化カタログ）を新設、「関連」節を末尾に追加、3 段分類と判断フローの内容は維持
+- README.md「これは何か」節に v0.6 フォーマット刷新方針を追記、Task layer 表に `ai-tone-check` を追加
+
 ## [0.5.0] - 2026-04-19
 
 ### Added
