@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-04-20
+
+### Changed
+
+- **`skills/ai-tone-check/SKILL.md` (v1.0.0 → v1.0.1)**: empirical 検証で発見した nested subagent 環境での Task tool 不可制約を反映
+  - description に「top-level Claude Code セッションから起動する」前提を明示
+  - 手順に「0. 実行環境チェック」節を新規追加 — `Task` tool 利用不可時は親エージェントによるロールプレイ代行を採らず、明示失敗して top-level 再起動を促す
+  - 落とし穴節に「Task tool が使えないから親がロールプレイで採点」を合理化カタログ 1 項目として追加
+- `README.md` Task layer 表の ai-tone-check 行に top-level 起動前提を追記
+
 ## [0.6.0] - 2026-04-20
 
 ### Added
