@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-04-21
+
+### Changed (設計思想の B-first 刷新)
+
+- **skill 設計思想の B-first 刷新**: Reference content / Task content 二類型区分を廃止し、全 skill を「AI エージェントが読んで実行する unified protocol」として再定義。execution completeness スペクトラム (人間読み / Web AI / Claude Code 等) で runtime 差を捉える
+- **`DESIGN.md` → `AGENTS.md` にリネーム**: skill エコシステムのデファクト (obra/superpowers / claude-code / cursor / gemini CLI が AGENTS.md を自動参照する動線) に整合。旧 `DESIGN.md` はリダイレクトスタブとして v0.8 まで残す
+- **AGENTS.md 冒頭に「If You Are an AI Agent」節を追加**: superpowers 流の AI contributor 向けガイド。本 repo の利用モデル (AI エージェント主読、大学職員は AI 経由で間接利用) を宣言
+- **AGENTS.md 原則 6 を B-first に書き換え**: Reference/Task 区分の廃止、execution completeness スペクトラムの導入、Claude Code 固有機能は `compatibility:` フィールドで明示する方針を明記
+
+### Changed (Anthropic 公式 Agent Skills Spec 準拠)
+
+- **全 15 skill の frontmatter を公式 spec に準拠**: `version` / `last_updated` / `author` を `metadata:` 下に畳む、description 1,024 字上限を遵守、`compatibility:` フィールドを Task tool / Write tool 依存 skill (ai-tone-check / create-action-skill) に採用、`disable-model-invocation` を `metadata:` 下に移動 (create-action-skill)
+- `skills/ai-tone-check/` v1.0.1 → v1.1.0: description から環境制約節を削除、`compatibility:` に移動
+- `skills/create-action-skill/` 初版 → v1.0.0: 正規 frontmatter に整備
+- その他 13 skill: minor bump (機械的変換)
+- **`references/skill-format-guide.md` を v0.7 対応に改訂**: Reference / Task 差分節を削除、unified protocol に統一、description 上限誤記 (「1,536 字」→「1,024 字」) を訂正、frontmatter の `metadata:` 下畳みを §2.1 で新規定義、読者 = AI エージェント前提を §0 冒頭で明示、execution completeness スペクトラム節 (§5) を新設
+
+### Changed (利用者向けドキュメント)
+
+- **`README.md` / `README.en.md`**: 「これは何か」節を「組織の AI エージェントにインストールする skill パッケージ」という位置付けに書き換え、DESIGN.md 参照を AGENTS.md に変更、全 skill の version 表示を v0.7 bump 後の値に更新
+- **`runtime-adapters/claude-code.md`**: DESIGN.md 参照を AGENTS.md に変更 (4 箇所)
+- **`skills/create-action-skill/SKILL.md`**: DESIGN.md 参照を AGENTS.md に変更 (7 箇所)
+
+### Non-breaking
+
+- skill 本文 (節構成 / トーン) の B-first 書き換えは半期改訂タイミングで順次実施、v0.7.0 では思想宣言と frontmatter 機械的修正のみ
+- Task skill 3 件 (check-info-level / create-action-skill / ai-tone-check) の merger は v0.7.1+ に分離、v0.7.0 では場所と名前を維持
+- 外部引用への影響: `DESIGN.md` リンクはリダイレクトスタブで維持 (v0.8 まで)、skill 名・パスに変更なし
+- 利用者は新旧混在を意識する必要なし — frontmatter 刷新は AI エージェントが spec 準拠で読めるようになるだけの裏方変更
+
 ## [0.6.1] - 2026-04-20
 
 ### Changed

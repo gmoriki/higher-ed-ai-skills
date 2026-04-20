@@ -6,10 +6,11 @@ description: >
   志望理由書に AI 使用の疑義が生じた時の判断基準を整備したい、
   不正認定と教育機会のどちらで運用するか迷う場面で使う入試部門職員向けスキル。
   文科省通知を骨格に、3 類型判断・二重確認プロセス・運用語彙選択・ツール未導入大学向け代替案を提供する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # entrance-exam-ai-policy

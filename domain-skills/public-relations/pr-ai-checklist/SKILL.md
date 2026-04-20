@@ -5,10 +5,11 @@ description: >
   「オープンキャンパス告知の SNS 投稿を複数パターン生成したい」「同窓会報の原稿を AI で下書きたい」
   場面で使う広報職員向けスキル。広報文面に求められる 7 点チェックと大学特有の品位を構造化し、
   AI 下書きから配信承認までのフローを標準化する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # pr-ai-checklist

@@ -6,10 +6,11 @@ description: >
   研究倫理セミナーで AI 使用の説明を求められる場面で使う研究支援職員向けスキル。
   3 原則（補助ツール／二次的出典／独自視点再構築）と 3 場面別（投稿論文・学位論文・科研費）の
   開示判断フローで、禁止事項 6 項目と日本学術振興会書式に合わせた開示テンプレを提供する。
-version: 1.1.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.2.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # research-integrity-ai-disclosure

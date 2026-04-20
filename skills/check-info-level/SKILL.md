@@ -13,10 +13,11 @@ when_to_use: >
   議事録 / 申請書 / 学生データ等を AI で処理する前段に呼ぶ
 argument-hint: "[text or file path]"
 allowed-tools: Read Bash(file:*) Bash(pdfinfo:*)
-version: 1.1.0
-last_updated: "2026-04-20"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.2.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # check-info-level

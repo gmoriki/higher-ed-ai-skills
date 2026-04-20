@@ -73,7 +73,7 @@ Slots whose function has been absorbed by existing skills are preserved under [`
 | University staff looking for practical use | [confidential-info-guidelines](skills/confidential-info-guidelines/SKILL.md) |
 | Preparing an AI adoption committee | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/SKILL.md) |
 | Building an SD training for new staff | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/SKILL.md) |
-| A consultant or researcher | [DESIGN.md](DESIGN.md) |
+| A consultant or researcher | [AGENTS.md](AGENTS.md) |
 | A Japanese reader | [README.md](README.md) |
 | New to GitHub | [docs/how-to-use.md](docs/how-to-use.md) |
 
@@ -115,7 +115,7 @@ This repository is provided for informational purposes only and does not constit
 
 ## Related documents
 
-- [DESIGN.md](DESIGN.md) — Design philosophy and the five principles
+- [AGENTS.md](AGENTS.md) — Design philosophy and the six principles (renamed from DESIGN.md in v0.7)
 - [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
 - [CHANGELOG.md](CHANGELOG.md) — Release history
 - [docs/update-policy.md](docs/update-policy.md) — Skill update policy

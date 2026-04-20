@@ -6,10 +6,11 @@ description: >
   「自学の AI 導入成熟度はどの段階か診断したい」「学長説明用 1 ページ要旨を作りたい」
   場面で使う、大学組織としての AI 導入検討支援スキル。
   3 カテゴリ × 2 ステップ × 2 主体のチェックリストと 5 段階成熟度モデルで合意形成を支援する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # institutional-ai-adoption-checklist

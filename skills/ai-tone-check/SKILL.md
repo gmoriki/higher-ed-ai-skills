@@ -9,19 +9,22 @@ description: >
   学生 / 学外読者の 3 ロールのいずれかで subagent がドラフトを読み、
   冗長敬語 / 空虚強調 / 両論併記等を行番号付きで指摘する。反復改善は
   呼び出し側判断、本 skill 自体はシングル実行。
-  **起動環境の前提**: top-level Claude Code セッションから起動する。
-  nested subagent 環境 (既に Task dispatch された subagent 内) では
-  Task tool 不可のため実行できない。
+compatibility: >
+  Requires top-level Claude Code session (Task tool for nested subagent
+  dispatch). Nested subagent 環境 (既に Task dispatch された subagent 内)
+  では Task tool 不可のため実行不可。Reading the protocol as documentation
+  works in any runtime.
 when_to_use: >
   広報原稿 / 研修配布資料 / 職員向けメール / 学生向け FAQ 等のドラフトを
   書いた後、公開前の最終チェックで使う。AI で下書きさせた文面を大学らしい
   トーンに寄せたい時、「何かしっくり来ないが言語化できない」時にも有効。
 argument-hint: "[draft path or text] [role: staff|student|public]"
 allowed-tools: Read Task
-version: 1.0.1
-last_updated: "2026-04-20"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # ai-tone-check

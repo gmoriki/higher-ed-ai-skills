@@ -8,10 +8,11 @@ description: >
   ファイルメタデータ / EXIF / OCR リスクや、Custom GPT / Projects / Gem 等の
   事前設定機能に登録する情報も同じ軸で扱う。所属大学規程が優先される前提での
   汎用的な判定軸であり、法的助言ではない。
-version: 1.3.0
-last_updated: "2026-04-20"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.4.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # confidential-info-guidelines

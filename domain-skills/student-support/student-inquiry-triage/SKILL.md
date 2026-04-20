@@ -4,10 +4,11 @@ description: >
   学生問い合わせを AI 回答／有人対応に振り分ける基準を整備したい、24 時間対応化の設計をしたい、
   履修・奨学金・証明書 FAQ のチャットボット導入企画書を書きたい場面で使う学生支援・教務職員向けスキル。
   問い合わせ分類・AI/人間振り分け・有人エスカレーション経路・時間帯別応答設計の判断フレームを提供する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # student-inquiry-triage
