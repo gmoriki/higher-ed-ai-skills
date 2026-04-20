@@ -5,10 +5,11 @@ description: >
   「留学生向け FAQ を複数言語対応させたい」「新入留学生向けオリエンテーション資料を各国語で出したい」
   場面で使う国際交流・留学生支援職員向けスキル。AI 翻訳で完結できる場面とネイティブチェックが必須の場面を
   切り分け、固有名詞辞書・文化配慮リストで運用品質を担保する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # multilingual-student-communication

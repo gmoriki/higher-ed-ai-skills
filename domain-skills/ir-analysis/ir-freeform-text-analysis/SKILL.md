@@ -5,10 +5,11 @@ description: >
   「大学評価業務で膨大な記述データを整理したい」「新入生アンケートの定性データからカテゴリを抽出したい」
   場面で使う IR 担当者向けスキル。匿名化前処理・カテゴリ抽出・クラスタリング・検証の 7 ステップで、
   Web 版 AI 禁止ゾーンと運用ラインを構造化する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # ir-freeform-text-analysis

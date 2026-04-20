@@ -7,10 +7,11 @@ description: >
   議事録 AI 化の判断と運用のスキル。
   `skills/confidential-info-guidelines/` の 3 段分類と連携し、会議機密性 × 出席者同意 × 匿名化の
   3 軸判断でツール選定と運用手順を示す。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # committee-meeting-minutes-ai

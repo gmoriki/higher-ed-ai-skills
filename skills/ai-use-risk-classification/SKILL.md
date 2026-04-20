@@ -5,10 +5,11 @@ description: >
   「既存の機密情報 3 段分類と業務場面を接続したい」
   「部署ごとの AI 利用方針を体系化したい」
   場面で使う横断スキル。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # ai-use-risk-classification

@@ -6,10 +6,11 @@ description: >
   教務委員会でシラバス記載ルールを議論する必要がある場面で使うシラバス AI 方針設計スキル。
   4 段階テンプレート（自由／場面限定／完全禁止／その他）と科目類型別選択肢カタログで、
   教員が 10 分で決められる判断フローを提供する。
-version: 1.1.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.2.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # syllabus-ai-policy

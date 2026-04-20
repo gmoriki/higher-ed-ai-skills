@@ -6,10 +6,11 @@ description: >
   「ハルシネーションの見抜き方を教えたい」場面で使う、大学職員向け AI リテラシー入門スキル。
   プロンプトの基本構造・ハルシネーション検出・サービス選定を、30〜60 分のコア研修に
   そのまま流用できる章立てで提供する。
-version: 1.0.0
-last_updated: "2026-04-19"
-author: gmoriki
 license: CC BY-SA 4.0
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-21"
+  author: gmoriki
 ---
 
 # staff-ai-literacy-primer
