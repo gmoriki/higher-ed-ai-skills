@@ -1,332 +1,151 @@
 ---
 title: Claude Code での higher-ed-ai-skills 活用ガイド
-version: 1.0.0
-last_updated: "2026-04-19"
+version: 1.1.0
+last_updated: "2026-05-10"
 author: gmoriki
 license: CC BY-SA 4.0
 ---
 
 # Claude Code での higher-ed-ai-skills 活用ガイド
 
-本ガイドは、Anthropic の CLI ツール **Claude Code** を利用する大学職員・教職員が、本リポジトリ（higher-ed-ai-skills）の 14 スキル（Reference 12 + Task 2）を自分の作業環境に組み込むための手順書である。
+本ガイドは、Claude Code で `higher-ed-ai-skills` を使うための導入メモです。詳細な設計思想は [AGENTS.md](../AGENTS.md)、skill の書き方は [references/skill-format-guide.md](../references/skill-format-guide.md) を正とします。
 
-> **本書の位置づけ**: 本リポジトリの設計思想は `AGENTS.md` §4「ランタイム非依存の思想」に基づく。skill.md を Single Source of Truth（唯一の正）として扱い、各ランタイム向けの実行方法は `runtime-adapters/` 配下に分離する。本ガイドはその最初の実装として Claude Code 向けの導入手順を整理したものである。
->
-> **前提**: 本書の記載は 2026 年 4 月時点の Claude Code の仕様に基づく。Claude Code の仕様は頻繁に変わる可能性があるため、公式ドキュメントも併せて参照してほしい。
+## 位置付け
 
----
+`higher-ed-ai-skills` は、大学職員が AI エージェントに大学業務を頼むための skill 集です。Claude Code では、各 skill ディレクトリを `~/.claude/skills/` またはプロジェクトの `.claude/skills/` に配置して使います。
 
-## 1. Claude Code の skill 仕組み概要
+旧 `Reference / Task` 二分類は使いません。全 skill は unified protocol です。違いは、判定だけで終わるか、文案作成やレビューを返すか、副作用があるかです。
 
-Claude Code は、ローカルディレクトリに配置された markdown ファイルを「スキル」として自動認識する仕組みを持つ。2026 年 4 月時点での挙動は以下のとおりと想定される。
+## 最小導入
 
-- **グローバル配置先**: `~/.claude/skills/` 配下の `.md` ファイルおよびサブディレクトリ内の `SKILL.md` が自動検出される。
-- **プロジェクト配置先**: 現在の作業ディレクトリ（およびその親ディレクトリを遡って最初に見つかる）の `.claude/skills/` 配下も同様に認識される。
-- **トリガー条件**: スキルの冒頭 YAML frontmatter にある `description` フィールドが、ユーザーの発話と照合され、関連度が高いと判断されるとスキル本体が読み込まれる（Progressive Disclosure の第 1 段階）。
-- **補助ファイルの扱い**: `SKILL.md` 本体で明示的に参照された `examples/` や `references/` 配下のファイルは、必要時にのみ AI が読み込む。常時コンテキストに展開されるわけではない。
-
-この仕組みは、本リポジトリが採用する「description をトリガー設計として書く」「本体は判断ロジックに絞る」「詳細は references へ」という設計原則（`AGENTS.md` §2）と自然に整合する。Claude Code は本リポジトリの skill.md を、そのままの構造で活用できる数少ないランタイムである。
-
-ただし、Claude Code の仕様は短期間で変更されうる。以下の手順は「2026 年 4 月時点の推奨」として読んでほしい。
-
----
-
-## 1.5 Reference layer と Task layer の使い分け (v0.5-v0.6 時点の記述、v0.7 で思想刷新)
-
-> **v0.7 における位置付け**: v0.5 で導入した Reference / Task 二類型区分は v0.7 で廃止され、全 skill は「AI エージェントが読んで実行する unified protocol」として再定義された。詳細は [`AGENTS.md` § 原則 6](../AGENTS.md#原則6-ai-エージェント主読の-unified-protocol) および [`references/skill-format-guide.md` §5 execution completeness スペクトラム](../references/skill-format-guide.md#5-execution-completeness-スペクトラム) を参照。本節の記述 (下記 §1.5.1-§1.5.4) は v0.5-v0.6 時点の歴史的記述として保持しており、v0.7.1+ で刷新予定。Claude Code ユーザーは本節を参考程度に読み、設計思想は AGENTS.md を正として扱うこと。
-
-v0.5 から本リポジトリは **Reference content** と **Task content** の二類型を並立させる構造に移行した。Anthropic 公式 docs (`https://code.claude.com/docs/en/skills`) が明示的に区別する 2 類型に整合する。
-
-### 1.5.1 Reference layer（既存 12 SKILL.md）
-
-Anthropic 公式定義: "Conventions, patterns, style guides, domain knowledge. This content runs inline so Claude can use it alongside your conversation context."
-
-本リポジトリでは判断フレームワーク / 規程ガイドライン / 政策文書がこれに該当する。`confidential-info-guidelines`, `syllabus-ai-policy`, `pr-ai-checklist` 等がすべて Reference layer。AI は description 照合で文脈に応じて自動参照し、人間に判断材料を返す。
-
-特徴:
-- frontmatter は最低限（name, description, version, author, license）
-- 本体は判断軸 / フローチャート / 使用場面 / Limitations の構造
-- AI が文脈で自動起動
-
-### 1.5.2 Task layer（v0.5 新規）
-
-Anthropic 公式定義: "Step-by-step instructions for a specific action, like deployments, commits, or code generation. Often invoked directly with `/skill-name`."
-
-v0.5 で追加された `check-info-level`, `create-action-skill` 等。AI が手順を実行し、構造化された成果物を返す。スラッシュコマンド `/skill-name` で明示起動する設計。
-
-特徴:
-- frontmatter に `when_to_use`, `argument-hint`, `allowed-tools`, 必要なら `disable-model-invocation: true` を追加
-- 本体は What This Does / Required Inputs / What It Produces / 手順 / 品質基準 / Available Tools の構造
-- ユーザーがスラッシュコマンドで明示起動 (AI 自動起動も可)
-
-### 1.5.3 公式 frontmatter 拡張機能の使い分け
-
-Task skill を書く際に活用できる Anthropic 公式機能（2026-04 時点）:
-
-| Field | 用途 | higher-ed での想定使用例 |
-|---|---|---|
-| `when_to_use` | description を補強する trigger phrase | 「『この資料 AI に入れて大丈夫？』と問われた時」等を列挙 |
-| `argument-hint` | autocomplete 表示 | `[text or file path]`, `[draft text]` |
-| `disable-model-invocation: true` | AI 自動起動を抑止、手動 only | 副作用ある skill (`/create-action-skill`, 将来 `/send-anonymized-summary` 等) |
-| `user-invocable: false` | `/` メニュー非表示、AI のみ | 内部参照専用の知識（v0.5 では未使用） |
-| `allowed-tools` | 実行中のみ pre-approve | `Read`, `Bash(git add:*)`, `WebSearch` 等を skill ごとに（Bash 引数はコロン構文 `Bash(cmd:*)`） |
-| `paths` | 特定ファイル編集時のみ自動起動 | 例: `paths: domain-skills/research-support/**` で研究支援領域編集時のみ起動 |
-| `context: fork` + `agent: Explore` | subagent で隔離実行 | 大規模リサーチ skill（v0.5 では未使用、v0.6+ 候補） |
-| `$ARGUMENTS` / `$0` / `$1` | 引数を skill 本文に展開 | `/check-info-level <path>` で `$ARGUMENTS` がパスに展開 |
-| `` !`shell command` `` | 本文に shell 結果を埋め込み | `pdfinfo` 出力を skill 本文に注入 等 |
-
-注: `user_invocable`（アンスコ）は仕様違反表記。常に `user-invocable`（ハイフン）を使う。`Bash()` 内の引数指定もスペースではなくコロン構文 `Bash(cmd:*)` が公式 permission 仕様。
-
-### 1.5.4 `disable-model-invocation` の判断基準
-
-以下のいずれかに該当する Task skill には付与する:
-
-- ファイル新規作成・上書きを行う（`/create-action-skill`）
-- 外部 API 呼び出しでコストや副作用が発生する
-- メール送信 / Slack 投稿 / GitHub PR 作成等の対外アクションを含む
-- 学外ユーザーに見える成果物を生成する（広報原稿の自動配信等）
-
-判定 / 評価のみで副作用がない skill（`/check-info-level` 等）には付けない（AI が文脈で自動起動できる方が便利）。
-
----
-
-## 2. 個人環境（~/.claude/skills/）への配置
-
-### 2-1. 全スキル一括導入
-
-本リポジトリの 14 スキル（Reference 12 + Task 2）をまとめて個人の Claude Code 環境に取り込む方法を示す。
-
-#### 方法 A: git clone して配置
+入力前トリアージの 3 点セットを入れます。
 
 ```bash
-# 作業用ディレクトリでクローン
-cd ~/Documents
 git clone https://github.com/gmoriki/higher-ed-ai-skills.git
-
-# ~/.claude/skills/ 配下にサブディレクトリとして配置
 mkdir -p ~/.claude/skills/
-cp -R ~/Documents/higher-ed-ai-skills/skills/* ~/.claude/skills/
-cp -R ~/Documents/higher-ed-ai-skills/domain-skills/* ~/.claude/skills/
+rm -rf ~/.claude/skills/higher-ed-check-info-level
+cp -R higher-ed-ai-skills/skills/check-info-level \
+  ~/.claude/skills/higher-ed-check-info-level
+rm -rf ~/.claude/skills/higher-ed-confidential-info-guidelines
+cp -R higher-ed-ai-skills/skills/confidential-info-guidelines \
+  ~/.claude/skills/higher-ed-confidential-info-guidelines
+rm -rf ~/.claude/skills/higher-ed-ai-use-risk-classification
+cp -R higher-ed-ai-skills/skills/ai-use-risk-classification \
+  ~/.claude/skills/higher-ed-ai-use-risk-classification
 ```
 
-この方式はファイルをコピーするため、upstream の更新を反映するには再度 `cp -R` を実行する必要がある。
+動作確認は、実データではなく架空カテゴリで行います。
 
-#### 方法 B: symbolic link を張る
-
-```bash
-# クローンしたリポジトリを ~/.claude/skills/ からリンクする
-mkdir -p ~/.claude/skills/
-ln -s ~/Documents/higher-ed-ai-skills/skills/confidential-info-guidelines \
-      ~/.claude/skills/higher-ed-confidential-info-guidelines
-# 必要なスキルぶん繰り返す
+```text
+架空の教授会資料です。
+通常報告、予算途中経過、人事案件が混ざる可能性があります。
+本文を読まずに、入力前トリアージをしてください。
 ```
 
-symbolic link を使うと、`git pull` で upstream を更新すれば自動的に反映される。ローカルで改変しない運用に向く。
+## 部局別導入
 
-#### 方法 C: リポジトリ丸ごとをサブディレクトリに置く
+| 部局・用途 | 追加する skill |
+|---|---|
+| 教務・教学 | `domain-skills/academic-affairs/syllabus-ai-policy` |
+| 入試 | `domain-skills/academic-affairs/entrance-exam-ai-policy` |
+| 学生支援 | `domain-skills/student-support/student-inquiry-triage` |
+| 国際 | `domain-skills/international-office/multilingual-student-communication` |
+| 研究支援 | `domain-skills/research-support/research-integrity-ai-disclosure` |
+| IR・内部質保証 | `domain-skills/ir-analysis/ir-freeform-text-analysis` |
+| 広報 | `domain-skills/public-relations/pr-ai-checklist`, `skills/ai-tone-check` |
+| 会議運営 | `skills/committee-meeting-minutes-ai` |
+| 組織導入・研修 | `skills/ai-use-risk-classification`, `skills/institutional-ai-adoption-checklist`, `skills/staff-ai-literacy-primer` |
+
+例:
 
 ```bash
-mkdir -p ~/.claude/skills/
-git clone https://github.com/gmoriki/higher-ed-ai-skills.git \
-          ~/.claude/skills/higher-ed-ai-skills
+rm -rf ~/.claude/skills/higher-ed-student-inquiry-triage
+cp -R higher-ed-ai-skills/domain-skills/student-support/student-inquiry-triage \
+  ~/.claude/skills/higher-ed-student-inquiry-triage
 ```
 
-この方式は簡便だが、Claude Code が `~/.claude/skills/higher-ed-ai-skills/` 配下の `SKILL.md` をどこまで再帰的に検出するかは実装に依存する。動作しない場合は方法 A/B に切り替える。
+## プロジェクト単位の導入
 
-#### 命名衝突の回避
-
-他の公開スキル集と併用する場合、`confidential-info-guidelines` のような一般的な名前は衝突しやすい。以下のように prefix を付けて配置することを推奨する。
+大学や部局ごとの private repository に `.claude/skills/` を置くと、学内規程や部局用語を加えた運用ができます。
 
 ```bash
-cp -R ~/Documents/higher-ed-ai-skills/skills/confidential-info-guidelines \
-      ~/.claude/skills/higher-ed-confidential-info-guidelines
-```
-
-### 2-2. 個別スキル選択導入
-
-全 14 スキルではなく必要なものだけを入れたい場合の手順。
-
-```bash
-# 例: confidential-info-guidelines のみ導入
-mkdir -p ~/.claude/skills/
-cp -R ~/Documents/higher-ed-ai-skills/skills/confidential-info-guidelines \
-      ~/.claude/skills/
-```
-
-担当業務が明確な職員は、この個別導入が現実的である。たとえば以下のような組み合わせが想定される。
-
-- 情報セキュリティ担当: `confidential-info-guidelines` / `ai-use-risk-classification` / `institutional-ai-adoption-checklist`
-- 教務担当: `confidential-info-guidelines` / `domain-skills/academic-affairs/` 配下
-- IR 担当: `confidential-info-guidelines` / `domain-skills/ir-analysis/` 配下
-- 研究支援担当: `confidential-info-guidelines` / `domain-skills/research-support/` 配下
-
-### 2-3. 更新 pull の運用
-
-本リポジトリは **半期改訂**（3 月末・9 月末）を原則としている（`AGENTS.md` §5）。更新への追従方法は以下のとおり。
-
-```bash
-cd ~/Documents/higher-ed-ai-skills
-git pull origin main
-
-# symbolic link 方式なら以降の操作は不要
-# cp 方式の場合は再度コピー
-cp -R ~/Documents/higher-ed-ai-skills/skills/* ~/.claude/skills/
-```
-
-ローカルで独自改変を積みたい場合は GitHub 上で fork し、自分の fork を clone して運用することを推奨する。fork 運用なら、upstream の更新を `git remote add upstream ...` で取り込みつつ、ローカル修正は自分の branch で保持できる。
-
----
-
-## 3. プロジェクト単位（.claude/skills/）での運用
-
-個人環境全体に導入するのではなく、特定のプロジェクト（リポジトリ）だけでスキルを有効化したい場合の運用を示す。
-
-### 3-1. 大学ごとの private リポジトリでの配置
-
-大学ごとに用語・規程・運用が異なるため、upstream をそのまま使うよりも「所属大学用の私的リポジトリに必要スキルをコピーし、大学固有のカスタマイズを加える」運用が想定される。
-
-```bash
-# 所属大学用リポジトリの例
-cd ~/Documents/my-univ-ai-playbook
 mkdir -p .claude/skills/
-cp -R ~/Documents/higher-ed-ai-skills/skills/confidential-info-guidelines \
-      .claude/skills/
-cp -R ~/Documents/higher-ed-ai-skills/skills/ai-use-risk-classification \
-      .claude/skills/
-# 大学固有の改変は .claude/skills/ 配下で直接行う
+rm -rf .claude/skills/higher-ed-check-info-level
+cp -R /path/to/higher-ed-ai-skills/skills/check-info-level \
+  .claude/skills/higher-ed-check-info-level
+rm -rf .claude/skills/higher-ed-ir-freeform-text-analysis
+cp -R /path/to/higher-ed-ai-skills/domain-skills/ir-analysis/ir-freeform-text-analysis \
+  .claude/skills/higher-ed-ir-freeform-text-analysis
 ```
 
-この運用の利点は、大学固有の用語置換（例: 「学部」→「学群」、「教務部」→「教育支援課」）や、学内 AI サービス（Azure OpenAI 契約など）への言及追加などを upstream と分離して管理できる点である。
+ローカル改変を行う場合は、upstream 更新と混ざらないよう fork または別リポジトリで管理してください。
 
-### 3-2. 部局別の切り分け
+## skill 間の依存
 
-部局ごとに有効化したいスキルが異なる場合、部局の業務リポジトリごとに `.claude/skills/` を設けるとよい。想定される切り分け例を示す。
+多くの業務別 skill は、入力前確認として次を参照します。
 
-| 部局 | 推奨スキル |
-|------|------------|
-| 教務部 | `domain-skills/academic-affairs/syllabus-ai-policy` / `confidential-info-guidelines` |
-| 研究推進部 | `domain-skills/research-support/research-integrity-ai-disclosure` / `confidential-info-guidelines` |
-| 広報部 | `domain-skills/public-relations/` 配下 / `confidential-info-guidelines` |
-| IR 部門 | `domain-skills/ir-analysis/ir-freeform-text-analysis` / `confidential-info-guidelines` |
-| 学生支援部 | `domain-skills/student-support/student-inquiry-triage` / `confidential-info-guidelines` |
+- `check-info-level`
+- `confidential-info-guidelines`
+- `ai-use-risk-classification`
 
-部局ごとに `.claude/skills/` を分けることで、「自部局に関係ないスキルが誤起動する」リスクを抑えられる。また、`confidential-info-guidelines` はどの部局でも共通で配置することを推奨する。
+業務別 skill だけを入れると、AI が情報区分や利用区分の定義を参照できず、出力が一般論に寄ることがあります。最低でも 3 点セットを同じ skill ディレクトリに入れてください。
 
----
+## tool 依存
 
-## 4. スキル間の依存関係と呼び出し
+一部 skill は Claude Code の tool に依存します。
 
-本リポジトリのスキルは、互いを参照しあう設計になっている箇所がある。Claude Code は依存関係を自動解決しないため、利用者側で揃えて配置する必要がある。
+| skill | tool | 注意 |
+|---|---|---|
+| `check-info-level` | `Read`, `Bash(file:*)`, `Bash(pdfinfo:*)` | 明示的にファイル内容判定を依頼された場合のみ読む。本文を読まない事前トリアージではファイルを開かない |
+| `ai-tone-check` | `Read`, `Task` | subagent dispatch が使える top-level セッション向け |
+| `create-action-skill` | `Read`, `Write`, `Bash(mkdir:*)` | 新規ファイル作成の副作用があるため、明示承認が必要 |
 
-### 4-1. `confidential-info-guidelines` を前提とするスキル
+tool が使えない runtime では、skill は「読める手順」として使えますが、ファイル読み取りや subagent dispatch は実行できません。
 
-以下のスキルは、内部で `confidential-info-guidelines` の 3 段分類（区分 I / II / III）を参照している。
+## deprecated を入れない
 
-- `committee-meeting-minutes-ai`（議事録 AI 化）
-- `domain-skills/ir-analysis/ir-freeform-text-analysis`（自由記述の IR 分析）
-- `domain-skills/student-support/student-inquiry-triage`（学生問い合わせのトリアージ）
-- その他、学生データや会議資料を扱う domain-skills の多く
+`deprecated/` 配下は Claude Code の skill 検出対象に入れないでください。旧 skill と現行 skill が同時に発火し、判断がぶれる可能性があります。
 
-これらを導入する場合、`confidential-info-guidelines` も必ず同じ場所（`~/.claude/skills/` または同一プロジェクトの `.claude/skills/`）に配置する。依存側のスキルだけ入れても、AI が 3 段分類の定義を参照できず、期待どおり動かない。
+## 更新
 
-### 4-2. `ai-use-risk-classification` との組み合わせ
-
-`ai-use-risk-classification` は「業務場面での AI 利用の 4 区分判定」を提供する。`confidential-info-guidelines` の「情報機密性の 3 段分類」と併用すると、次の順序での呼び出しが推奨される。
-
-1. まず業務場面を `ai-use-risk-classification` で 4 区分判定する（禁止 / 要承認 / 要注意 / 許容 など）。
-2. 許容寄りの区分であれば、扱う情報を `confidential-info-guidelines` で 3 段分類する。
-3. 情報分類に応じた AI サービスの選定を行う。
-
-この順序は「業務場面 → 情報機密性」であり、逆順（先に情報だけで判断し、業務文脈を見落とす）は推奨しない。
-
-### 4-3. 競合シナリオ（旧 deprecated スキルとの同居）
-
-`deprecated/` 配下には、役割を後発スキルに引き継いだ旧スキルが残されている（例: `advanced-prompting-for-admin`, `ai-report-evaluation`, `tool-selection-guide`）。これらを誤ってグローバル環境に置いてしまうと、新スキルと競合する可能性がある。
-
-対応方針:
-
-- 原則として `deprecated/` 配下は Claude Code のスキル検出対象から外す。
-- 既に導入済みの場合は、`~/.claude/skills/` から該当ディレクトリを外すか、ファイル名の末尾に `.disabled` を付けるなどして無効化する。
-- どうしても旧スキルを参照したい場合は、本体冒頭の「非推奨／代替スキルへの誘導」記述が残っていることを確認する（`AGENTS.md` §5.4）。
-
----
-
-## 5. トラブルシューティング
-
-### 5-1. 日本語 description が英語と混合して解釈される
-
-本リポジトリのスキルは日本語で書かれているが、Claude Code のロケールやモデルの挙動によっては、応答が英語混じりになることがある。
-
-対処策:
-
-- セッション冒頭で「以降の応答は日本語で行ってください」と明示的に指示する。
-- プロジェクトの `CLAUDE.md`（または `~/.claude/CLAUDE.md`）に「本プロジェクトでは日本語で応答する」旨を記載する。
-- description 側には手を加えず、ユーザー指示側で言語を固定するほうが副作用が少ない。
-
-### 5-2. mermaid 図が Claude Code 上で描画されない
-
-本リポジトリのスキルでは mermaid 構文で判断フローを示している箇所がある。Claude Code のターミナル出力は mermaid を図として描画しないが、AI は構文として理解できるため判断ロジックの読み取りには支障はない。
-
-視覚的に確認したい場合は、GitHub 上で該当の `SKILL.md` を開くと mermaid が図として描画される。Claude Code 上で図を見る前提で設計されていない点に留意してほしい。
-
-### 5-3. frontmatter parse エラー
-
-スキルを自作・改変したときに、frontmatter の YAML 構文エラーで読み込まれないことがある。典型的な原因は以下。
-
-- インデントがスペースとタブで混在している。
-- 値にコロン（`:`）を含む文字列をクォートしていない。
-- 複数行の description で `>` や `|` の使い方を誤っている。
-- `last_updated: 2026-04-19` のように日付をクォートせずに書くと、YAML パーサによっては日付オブジェクトとして解釈され、他の処理で文字列前提のコードが動かないことがある。本リポジトリでは `last_updated: "2026-04-19"` のように**必ずクォートする**方針を採っている。
-
-エラー発生時は `python -c "import yaml; yaml.safe_load(open('SKILL.md').read().split('---')[1])"` などで frontmatter だけを切り出して検証すると原因特定が速い。
-
-### 5-4. グローバルとプロジェクトでの名前衝突
-
-`~/.claude/skills/confidential-info-guidelines/` と、プロジェクト `.claude/skills/confidential-info-guidelines/` の両方に同名スキルが存在する場合、どちらが優先されるかは Claude Code の実装に依存する。2026 年 4 月時点では「プロジェクト側が優先される」挙動が一般的と想定されるが、確証はない。
-
-推奨:
-
-- グローバル側は upstream をそのまま置き、大学固有改変はプロジェクト側でのみ行う。
-- プロジェクト側で改変した場合は、`SKILL.md` の frontmatter に `author: gmoriki + 〇〇大学` のように追記して由来を明示する。
-- どちらが実際に読まれているか疑わしいときは、Claude Code セッションで「いまロードされているスキルの description を教えて」と尋ねて確認する。
-
----
-
-## 6. 更新運用
-
-### 6-1. 半期改訂時の追従
-
-本リポジトリは 3 月末・9 月末の半期改訂を原則としている。改訂タイミングに合わせて以下を行うことを推奨する。
+コピー方式で導入している場合:
 
 ```bash
-cd ~/Documents/higher-ed-ai-skills
+cd higher-ed-ai-skills
 git pull origin main
-
-# CHANGELOG で変更点を確認
-less CHANGELOG.md
+rm -rf ~/.claude/skills/higher-ed-check-info-level
+cp -R skills/check-info-level ~/.claude/skills/higher-ed-check-info-level
 ```
 
-`CHANGELOG.md` は Keep a Changelog 形式で記述されており、「Added / Changed / Deprecated / Removed」の区分で変更を追える。とくに `Changed` と `Deprecated` はローカルカスタマイズへの影響が出やすいため重点的に確認する。
+既存ディレクトリに直接 `cp -R` するとネストして更新されないことがあります。更新時は削除してからコピーするか、`rsync --delete` で同期してください。
 
-### 6-2. カスタマイズと upstream の整合
+```bash
+rsync -a --delete skills/check-info-level/ \
+  ~/.claude/skills/higher-ed-check-info-level/
+```
 
-所属大学の用語や規程に合わせて改変する場合、以下の判断が必要になる。
+シンボリックリンク方式なら、clone 元の `git pull` で反映されます。組織利用では、更新内容を確認してから反映してください。
 
-- **汎用的な改善**（typo、文意の改善、新しいサービスへの言及追加など）は upstream への Pull Request を送ることを推奨する。`CONTRIBUTING.md` を参照。
-- **大学固有の改変**（自学名の差し込み、学内 AI サービスの具体名など）は upstream には送らず、fork または大学内リポジトリで保持する。
-- いずれの場合も、`AGENTS.md` §2 の 5 原則（Progressive Disclosure / description はトリガー設計 / 本体は判断ロジック / 模範回答 / 陳腐化前提の更新設計）を外さない範囲でのカスタマイズが望ましい。
+## トラブルシューティング
 
----
+### 汎用回答になる
 
-## 7. 参考
+次のように skill 名を明示します。
 
-- Claude Code 公式ドキュメント: <https://docs.anthropic.com/ja/docs/claude-code> （URL は 2026 年 4 月時点のもの。仕様の最新情報はこちらを参照）
-- 本リポジトリの `AGENTS.md` §4「ランタイム非依存の思想」
-- 本リポジトリの `docs/how-to-use.md`（パターン A/B/C の使い方概観）
-- 本リポジトリの `CONTRIBUTING.md`（改変・PR の方針）
+```text
+higher-ed-ai-skills の `check-info-level` と `student-inquiry-triage` を使ってください。
+入力前確認、判定、根拠、推奨対応、確認先、残リスクを分けて返してください。
+```
 
-他のランタイム（ChatGPT / Microsoft Copilot / GitHub Copilot / ローカル LLM）向けのアダプタは、本リポジトリ v0.5 以降で順次追加予定である。
+### 実データを読もうとする
 
----
+次のように止めます。
 
-*本ガイド自体も半期改訂の対象である。Claude Code の仕様変更に追従できていない記述があれば、Issue または PR で指摘してほしい。*
+```text
+本文やファイルはまだ読まないでください。
+資料種別、公開範囲、情報カテゴリ、処理目的、AI 実行環境だけで事前トリアージしてください。
+```
+
+### skill が古い
+
+[docs/update-policy.md](../docs/update-policy.md) の半期改訂方針に従い、`metadata.last_updated` と [CHANGELOG.md](../CHANGELOG.md) を確認してください。

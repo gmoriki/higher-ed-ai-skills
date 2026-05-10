@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **README / README.en を University-work-first の入口へ再設計**: 「AI 活用支援」ではなく「大学職員が AI エージェントに大学業務を頼むための Agent Skills 集」として再定義。README の前面分類を「まず安全確認」「業務別に頼む」「組織導入・研修」「Skill 作成・保守」に変更。
+- **全 15 skill 本文を unified protocol へ移行**: `いつ使うか`、`入力前の確認`、`出力フォーマット`、`落とし穴`、`関連` を揃え、本文やファイルを読む前のトリアージを必要な場面で明示。
+- **`create-action-skill` から Reference / Task 二分類を撤去**: 新規 skill 作成時も unified protocol を生成するように改稿。
+- **domain README を実装済み skill 一覧へ更新**: 「格納予定」「公開予定」の古い記述を削除し、実際の業務導線、関連 skill、今後の候補を記載。
+- **docs / runtime adapter / update policy を現行方針へ更新**: `metadata:` 配下 frontmatter、業務起点の利用例、実データを読まない動作確認、Claude Code での最小導入を反映。
+
 ## [0.7.0] - 2026-04-21
 
 ### Changed (設計思想の B-first 刷新)

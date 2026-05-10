@@ -1,17 +1,22 @@
-# 広報 / Public Relations
+# 広報・文書 / Public Relations
 
-このディレクトリは、プレスリリース・SNS・広報素材制作などの広報業務におけるAI活用スキルを格納予定です。
+プレスリリース、SNS、学長メッセージ、広報誌、学生向け案内など、公開前の事実確認、文体、承認経路が重要な文書を扱います。
 
-## 想定スキル（例）
+## 実装済み skill
 
-- プレスリリース作成支援（構成・トーン調整）
-- SNS 投稿の多言語化フロー
-- ブランド統一チェック（表記・トーン・ビジュアル）
+| Skill | 使う場面 | 先に確認すること |
+|---|---|---|
+| [pr-ai-checklist](pr-ai-checklist/) | 広報原稿の下書き、公開前確認、承認前チェック | 公開範囲、事実確認元、関係部署、個人情報 |
 
-## 公開予定
+## 関連 skill
 
-v0.3.x 以降（スキルの蓄積状況に応じて）
+- [ai-tone-check](../../skills/ai-tone-check/) — 大学業務文書の読者負荷と AI っぽさを確認。
+- [multilingual-student-communication](../international-office/multilingual-student-communication/) — 多言語案内の運用品質確認。
 
-## ルート README に戻る
+## 今後の候補
 
-[README.md](../../README.md)
+- ブランド表記・トーン統一チェック
+- 研究成果プレスリリースの確認フロー
+- 学長・理事長メッセージの固有文体保持
+
+[README.md](../../README.md) に戻る。

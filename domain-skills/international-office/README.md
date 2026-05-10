@@ -1,17 +1,22 @@
 # 国際 / International Office
 
-このディレクトリは、留学生支援・国際連携・渡日前対応などの国際業務におけるAI活用スキルを格納予定です。
+留学生支援、外国人研究者対応、多言語案内、国際連携に関する skill を置きます。AI 翻訳の効率化だけでなく、制度上の個別判断、文化的配慮、確認者の責任範囲を扱います。
 
-## 想定スキル（例）
+## 実装済み skill
 
-- 留学生向け案内の多言語化フロー
-- 渡日前FAQの自動応答設計
-- 交換協定書・MOU の比較分析ワークフロー
+| Skill | 使う場面 | 先に確認すること |
+|---|---|---|
+| [multilingual-student-communication](multilingual-student-communication/) | 留学生向け案内、FAQ、オリエンテーション資料を多言語化する | 文書種別、個別判断の有無、確認者、固有名詞辞書 |
 
-## 公開予定
+## 関連 skill
 
-v0.3.x 以降（スキルの蓄積状況に応じて）
+- [student-inquiry-triage](../student-support/student-inquiry-triage/) — 在留資格、合理的配慮、個別相談の有人引継ぎ。
+- [ai-tone-check](../../skills/ai-tone-check/) — 学生向け文面の読者負荷確認。
 
-## ルート README に戻る
+## 今後の候補
 
-[README.md](../../README.md)
+- MOU・協定書の論点整理
+- 渡日前 FAQ の運用設計
+- 多言語窓口チャットボットの回答境界設計
+
+[README.md](../../README.md) に戻る。

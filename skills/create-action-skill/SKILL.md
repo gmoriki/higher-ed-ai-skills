@@ -1,296 +1,197 @@
 ---
 name: create-action-skill
 description: >
-  職員 / 研究者の暗黙知を対話的にヒアリングし、higher-ed-ai-skills 規格
-  (`references/skill-format-guide.md` 準拠) の SKILL.md を生成する meta
-  skill。「自分のノウハウをスキル化したい」「業務手順を構造化したい」と
-  言われた時に手動で起動する。Write tool による副作用 (新規ファイル作成)
-  があるため、AI 自動起動は抑止する。
+  大学職員や研究支援職員が「自分の業務ノウハウを Agent Skill にしたい」
+  「部署の暗黙知を SKILL.md に構造化したい」「新しい higher-ed-ai-skills 用 skill を
+  作りたい」と明示した時に使う。業務目的、利用者、入力前確認、判断軸、
+  出力フォーマット、落とし穴、関連 skill、配置先、ライセンスをヒアリングし、
+  unified protocol 形式の SKILL.md と example を生成する。
 compatibility: >
-  Requires Claude Code or equivalent runtime with Write tool (creates new
-  SKILL.md files). Reading the protocol as documentation works in any runtime.
+  Requires Claude Code or equivalent runtime with file writing tools.
+  Creates new files only after explicit user approval.
 allowed-tools: Read Write Bash(mkdir:*) Bash(ls:*)
 license: CC BY-SA 4.0
 metadata:
-  version: "1.0.0"
-  last_updated: "2026-04-21"
+  version: "1.1.0"
+  last_updated: "2026-05-10"
   author: gmoriki
   disable-model-invocation: true
 ---
 
 # create-action-skill
 
-higher-ed-ai-skills 規格に準拠した新規 SKILL.md を、対話ヒアリング経由で生成するメタ Task skill。
+大学業務の暗黙知を、AI エージェントが実行できる `SKILL.md` に変換する。旧 Reference / Task 二分類は使わず、すべて unified protocol として、入力前確認、判断軸、出力フォーマット、落とし穴を持つ skill を作る。
 
-## What This Does
+## いつ使うか
 
-ユーザー（大学職員 / 研究者 / URA / 教員）が自分の暗黙知・業務知見を、higher-ed-ai-skills のいずれかの SKILL.md として構造化したい場面で使う。対話的に必要情報を聞き取り、Anthropic 公式 Skills 仕様に準拠した SKILL.md ファイル一式（本体 + examples/ 1 件）を生成する。
+- 大学職員が自分の業務ノウハウを skill 化したい時。
+- 部署の運用、確認経路、判断基準を AI エージェントに渡せる形にしたい時。
+- `higher-ed-ai-skills` に新しい大学業務 skill を追加したい時。
+- 既存 skill の抜けを埋める新領域を設計したい時。
 
-t46/ra-skills の `create-ra-skill` 設計を参照しつつ、higher-ed-ai-skills 固有の以下を統合:
-- Reference type / Task type の使い分け判断を最初に問う
-- AGENTS.md §2 の 5 原則（Progressive Disclosure / description トリガー設計 / 本体は判断ロジック / 模範回答 / 陳腐化前提）に沿った構造化
-- ライセンス（CC BY-SA 4.0）と引用方針（政府一次ソース / 構造借用のみ）の確認
+使わない場面:
 
-## Required Inputs
+- 単に README や手順書を人間向けに書きたいだけの時。
+- 外部公開できない学内規程や個人情報をそのまま skill に入れたい時。
+- ファイル作成の承認がない時。
 
-`$ARGUMENTS` は不要。対話で以下を順次収集:
+## 入力前の確認
 
-1. type 選択（Reference / Task）
-2. 業務概要（1-2 文）
-3. 想定起動シーン（ユーザーの自然な発話）
-4. 入力情報（Task の場合）/ 適用文脈（Reference の場合）
-5. 出力 / 期待挙動
-6. 手順 / 判断基準
-7. よくある落とし穴
-8. 参照する一次ソース（政府 / 大学事例 / 既存 P4Us / Ontario Pressbooks）
-9. ライセンス互換性確認
+ヒアリングで、実データや内部文書をそのまま求めない。まず次のカテゴリで聞く。
 
-## What It Produces
+- 業務名と業務目的。
+- 想定利用者: 職員、教員、研究支援、管理職、学生対応など。
+- ユーザーが実際に言いそうな相談文。
+- 扱う情報カテゴリ: 学生、人事、入試、研究、会議、公開情報など。
+- AI が返すべき成果物。
+- 所属大学で確認すべき規程、部署、決裁権者。
+- よくある誤りや合理化。
+- 外部根拠とライセンス。
 
-- `skills/{skill-name}/SKILL.md` または `domain-skills/{area}/{skill-name}/SKILL.md` 一式
-- `skills/{skill-name}/examples/example-01-*.md`（最低 1 件）
-- 配置先パス、frontmatter、本体構造、依存スキルの一覧サマリ
+内部資料が必要な場合は、公開できる抽象化、架空例、項目名だけに変換してもらう。
 
-## 手順
+## ヒアリング項目
 
-### Phase 0: 起動チェック
+1. **業務概要**: どの大学業務を支援する skill か。
+2. **発話 trigger**: ユーザーがどんな言葉で相談した時に起動すべきか。
+3. **使う場面 / 使わない場面**: 対象と除外。
+4. **入力前確認**: 本文やファイルを読む前に確認すべき情報カテゴリ。
+5. **中核判断軸**: 分類、手順、チェックリスト、フロー。
+6. **出力フォーマット**: AI が返す Markdown 構造。
+7. **確認先**: 規程、担当部署、決裁権者、記録化。
+8. **落とし穴**: 現場で起こる合理化と実態。
+9. **関連 skill**: 連携すべき既存 skill。
+10. **配置先**: `skills/` か `domain-skills/<area>/`。
+11. **ライセンス**: 引用可否、構造参照、出典。
 
-`/create-action-skill` 実行時、まず以下を確認:
+## 配置先
 
-- 現在の作業ディレクトリが `higher-ed-ai-skills` リポジトリ直下か（`README.md` と `AGENTS.md` の存在で判定）
-- 違う場合: 「higher-ed-ai-skills リポジトリのルートで実行してください」と返して終了
+| 配置 | 用途 |
+|---|---|
+| `skills/` | 複数業務で使う横断 skill、入力前確認、組織導入、文書確認、skill 作成 |
+| `domain-skills/academic-affairs/` | 教務・教学・入試 |
+| `domain-skills/student-support/` | 学生支援 |
+| `domain-skills/international-office/` | 国際・留学生 |
+| `domain-skills/research-support/` | 研究支援 |
+| `domain-skills/ir-analysis/` | IR・内部質保証 |
+| `domain-skills/public-relations/` | 広報・文書 |
 
-### Phase 1: type 選択ヒアリング
+新領域が必要な場合は、README と roadmap も更新する。
 
-最初に以下を提示:
+## 生成する構造
 
+```text
+<skill-name>/
+  SKILL.md
+  examples/example-01-<scenario>.md
+  references/   # 必要な場合のみ
 ```
-作成するスキルの type を選んでください:
 
-1. Reference type — 判断フレームワーク / ガイドライン文書。AI が読んで人間
-   に判断材料を返す。例: confidential-info-guidelines, syllabus-ai-policy。
-   既存 12 個の SKILL.md はすべてこの type。
+## SKILL.md テンプレート
 
-2. Task type — AI が手順を実行して成果物を返す Action skill。
-   例: /check-info-level（テキスト渡すと Level 判定）。
-   v0.5 で導入された新類型。
-```
-
-ユーザーが選択した type に応じて、Phase 2 以降のテンプレートを切り替える。
-
-### Phase 2: ヒアリング（共通）
-
-#### Q1. 業務 / ノウハウの概要
-
-「どんな業務 / 判断についてのスキルですか？」（1-2 文）
-
-#### Q2. 想定起動シーン（description トリガー設計用）
-
-「ユーザーがどんな言葉で問いかけた時にこのスキルが起動すべきですか？」
-具体的な発話例を 3 つ挙げてもらう（AGENTS.md §2 原則 2 に沿う）。
-
-### Phase 3a: Reference type 専用ヒアリング
-
-(Phase 1 で 1 を選んだ場合のみ)
-
-#### Q3. 適用文脈
-どの業務領域 / 担当部門で参照されるか（例: 教務、研究支援、広報）。
-
-#### Q4. 判断軸
-判断のための区分 / 階層 / フローチャート（例: 3 段階分類、4 区分判定）。
-
-#### Q5. 限界 / 例外
-規程や法令に従って判断が変わる箇所、所属大学による差異。
-
-### Phase 3b: Task type 専用ヒアリング
-
-(Phase 1 で 2 を選んだ場合のみ)
-
-#### Q3'. 入力情報
-スキル起動時に渡される引数 / ファイル / テキストの種類。
-
-#### Q4'. 出力 / 成果物
-判定結果、レポート、ファイル、リスト等、何を返すか。
-
-#### Q5'. 実行手順
-ステップバイステップの動作。AI が踏む順序。
-
-#### Q6'. 使用ツール
-Read / Write / Bash / WebSearch 等、必要なツールを列挙。
-
-#### Q7'. 自動起動の可否
-副作用（ファイル作成、メール送信、外部 API 呼び出し）の有無。
-ある場合は `disable-model-invocation: true` を frontmatter に追加。
-
-### Phase 4: 共通追加ヒアリング
-
-#### Q8. よくあるミス / 落とし穴
-利用者がやりがちな誤りとその対策。
-
-#### Q9. 参照する一次ソース
-- 政府一次ソース（文科省 / 教育部 / TEQSA / NIH 等）
-- 大学事例（特定大学のガイドライン公開ページ）
-- 森木 P4Us（MIT License）
-- Ontario Pressbooks（CC BY-SA 4.0）
-
-**ライセンス警告**: EDUCAUSE / Stanford / 復旦大 / 出版社公式ポリシーから直接引用しない（CC BY-SA 4.0 互換性なし）。構造のみ参照可。
-
-#### Q10. 配置先
-
-- 横断スキル → `skills/{skill-name}/`
-- 業務領域別 → `domain-skills/{area}/{skill-name}/`（area: academic-affairs / international-office / ir-analysis / public-relations / research-support / student-support）
-
-### Phase 5: SKILL.md 生成
-
-ヒアリング結果を以下のテンプレートに流し込む:
-
-#### Reference type テンプレート
-
-```markdown
+````markdown
 ---
-name: {kebab-case}
-description: {Q2 から生成、トリガー設計}
-version: 1.0.0
-last_updated: "{今日の日付 ISO 8601}"
-author: {ユーザー指定}
+name: <skill-name>
+description: >
+  <発話 trigger、業務場面、返すもの、除外条件>
 license: CC BY-SA 4.0
+metadata:
+  version: "1.0.0"
+  last_updated: "<YYYY-MM-DD>"
+  author: gmoriki
 ---
 
-# {skill-name}
+# <skill-name>
 
-{1 行説明}
+<1-3 文の mission。AI エージェントが何を確認し、何を返すかを書く。>
 
-## 1. Overview
-{Q1 + Q3}
+## いつ使うか
 
-## 2. Prerequisites
-{確認すべき所属大学規程・関連法令}
+- <使う場面>
 
-## 3. {判断軸の名前}
-{Q4 を表 / フローチャートで構造化}
+使わない場面:
+- <除外条件>
 
-## 4. 判断フロー
-{Mermaid flowchart}
+## 入力前の確認
 
-## 5. 使用場面
-{ミニ判断例 2-3 件}
+- <本文やファイルを読む前に確認する情報カテゴリ>
+- <未確認なら質問すること>
 
-## 6. Limitations
-{Q5 を整理}
+## <中核節>
 
-## 依存スキル / 関連スキル
-{他の skill を参照する場合は `[label](../skill-name/SKILL.md)` の Markdown link 形式で記述。例: 機密情報判定が必要なら [`skills/confidential-info-guidelines/`](../confidential-info-guidelines/SKILL.md) を参照、等。無ければセクション削除}
+<判断軸、手順、チェックリスト、フロー>
 
-## References
-{Q9 を分類して列挙、ライセンス警告適用済み}
-```
-
-#### Task type テンプレート
+## 出力フォーマット
 
 ```markdown
----
-name: {kebab-case}
-description: {Q2 から生成。自然発話を 2-3 個埋め込み「…と問われた時に起動する」で締める。例: skills/check-info-level/SKILL.md の description を参照}
-when_to_use: {Q2 の発話例 3 つ}
-argument-hint: {Q3' から推定}
-{オプション行: Q7' で副作用ありの場合のみ次行を追加}
-disable-model-invocation: true
-allowed-tools: {Q6' から生成。Bash 引数はコロン構文 (例: Bash(git status:*))。複数 entry はスペース区切り}
----
+## 判定
+<実行可 / 条件付き / 要確認 / 不可>
 
-# {skill-name}
+## 根拠
+- 業務目的:
+- 扱う情報カテゴリ:
+- 判断に使う規程・担当部署・決裁権者:
 
-{1 行説明}
+## 推奨対応
+1. <AI エージェントが行う作業>
+2. <職員・担当部署が確認する作業>
 
-## What This Does
-{Q1 + Q3'}
+## AI に渡してよい資料範囲
+- <公開情報 / 学内限定 / 匿名化済み / 渡さない情報>
 
-## Required Inputs
-{Q3' を構造化}
+## 確認先
+- <規程 / 担当部署 / 委員会 / 決裁権者>
 
-## What It Produces
-{Q4' を箇条書き}
-
-## 手順
-{Q5' をステップバイステップ、各ステップ番号付き}
-
-## 品質基準
-{Q8 から「これを満たさないとダメ」を逆算して列挙}
-
-## Available Tools
-{Q6'。frontmatter と同じ Bash(...:*) 表記で揃える}
-
-## 依存スキル
-{もし他 skill を参照するなら明示。`[label](../skill-name/SKILL.md)` の Markdown link 形式で}
+## 残リスク
+- <未確認事項、外部根拠、制度差、運用上の例外>
 ```
 
-### Phase 6: examples 生成
+## 落とし穴
 
-`examples/example-01-{シーン名}.md` を 1 件生成。テンプレート:
+| 合理化 | 実態 |
+|---|---|
+
+## 関連
+
+- `<related-skill>` — <関係>
+````
+
+## 出力フォーマット
 
 ```markdown
-# 例 1: {シーン名}
+## 作成計画
+- skill 名:
+- 配置先:
+- 想定利用者:
+- 発話 trigger:
 
-## 入力 / 状況
-{ユーザーが想定する典型シナリオ}
+## 確認したい不足情報
+- <本文ではなく情報カテゴリで質問>
 
-## 期待される処理 (Task type) / 判定 (Reference type)
-{該当 skill を適用した時の挙動}
+## 生成物
+- `SKILL.md`
+- `examples/example-01-...md`
 
-## 期待される出力
-{具体的な応答例}
+## 変更したファイル
+- <path>
 
-## なぜこの応答が適切か
-{2-3 文の解説}
+## 残リスク
+- <外部根拠、ライセンス、未確認規程>
 ```
 
-### Phase 7: ファイル保存と検証
+## 落とし穴
 
-1. `mkdir -p {配置先}`
-2. `Write` で SKILL.md 保存
-3. `Write` で examples/example-01-*.md 保存
-4. frontmatter parse 検証コマンドを提示 (yaml モジュールが入っていれば yaml.safe_load、なければ正規表現で `name:` と `description:` の存在を確認)
-5. 配置先パスとファイル一覧をユーザーに提示
+| 合理化 | 実態 |
+|---|---|
+| Reference / Task のどちらかを選ばせる | 旧分類。全 skill は unified protocol として書く |
+| 学内規程をそのまま貼ればよい | 公開できない情報や著作権上の問題がある。抽象化して書く |
+| 使い方を丁寧に説明すれば skill になる | AI が何を確認し、何を返すかが必要 |
+| 出力例を省く | Agent skill は返す形がないと実行がぶれる |
+| 落とし穴を省く | 大学業務では合理化の抑止が品質に直結する |
+| ファイル作成を自動で進める | 副作用があるため、配置先と作成ファイルを明示してから進める |
 
-### Phase 8: 次のステップ案内
+## 関連
 
-```
-スキルを生成しました:
-- {配置先}/SKILL.md
-- {配置先}/examples/example-01-{シーン名}.md
-
-次のステップ:
-1. SKILL.md を読み返し、文意・トーンを微修正
-2. README.md のスキル一覧表に追加
-3. CHANGELOG.md に [Added] エントリ追加
-4. 検証: Claude Code を再起動し、想定発話で起動するか確認
-   → /{skill-name} で直接起動も試す
-5. 半期改訂時 (3月末 / 9月末) に内容を見直し、last_updated を更新
-
-GitHub への PR を出すなら:
-1. fork → branch (add-skill/{skill-name})
-2. CONTRIBUTING.md 参照して PR 作成
-```
-
-## 品質基準
-
-- ヒアリングは一方的でなく、ユーザー回答に応じて深掘りすること
-- ユーザーが言っていない情報を AI が補完しない（憶測で書かない）
-- 一次ソース引用時に CC BY-SA 4.0 互換性を必ず確認すること
-- 生成された SKILL.md が AGENTS.md §2 の 5 原則に沿っていること
-- examples/ を必ず最低 1 件生成すること（AGENTS.md §2 原則 4 ─ 模範回答必須）
-- 生成後に「ユーザー自身でレビューしてください」と必ず添えること
-
-## Available Tools
-
-- **Read**: 既存スキル / AGENTS.md / README.md の参照
-- **Write**: 新規ファイル作成
-- **Bash(mkdir:*)**: ディレクトリ作成
-- **Bash(ls:*)**: 既存ファイル確認
-
-## 依存スキル / 参照
-
-- [`AGENTS.md`](../../AGENTS.md) §2（5 原則）
-- [`CONTRIBUTING.md`](../../CONTRIBUTING.md)（PR ルール）
-- 既存 12 SKILL.md（[`skills/`](../../skills/) と [`domain-skills/`](../../domain-skills/) 配下、テンプレート参考）
-- [`runtime-adapters/claude-code.md`](../../runtime-adapters/claude-code.md)（公式 frontmatter 仕様）
+- [`references/skill-format-guide.md`](../../references/skill-format-guide.md) — SKILL.md の標準形式。
+- [`AGENTS.md`](../../AGENTS.md) — リポジトリ設計思想。
+- [`confidential-info-guidelines`](../confidential-info-guidelines/SKILL.md) — 入力前確認の基礎。

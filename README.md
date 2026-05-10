@@ -1,149 +1,126 @@
 # higher-ed-ai-skills
 
-大学業務のAI活用を skill.md 形式で構造化した公開スキル集。
+日本の大学職員が AI エージェントに大学業務を頼むための Agent Skills 集です。
+
+教務、学生支援、研究支援、IR、広報、国際、委員会運営、研修、文書確認などの実務を、大学固有の規程、権限、情報管理、承認経路を踏まえて支援します。
 
 [English](README.en.md)
 
----
-
 ## これは何か
 
-日本の大学業務と生成AIのあいだには、しばしば翻訳が必要になります。
+大学業務には、規程だけでは扱いきれない判断が多くあります。稟議、委員会、教員と職員の権限分離、学生データ、年度サイクル、部局ごとの慣行は、そのまま AI に頼みにくい知識です。
 
-大学には文書化されていない暗黙知が多く存在します。
+このリポジトリは、その暗黙知を `SKILL.md` 形式で公開します。主な読者は AI エージェントです。大学職員は、AI エージェントに自然文で相談し、必要な skill を呼び出してもらう想定です。
 
-- 稟議の通し方
-- 学年暦の例外処理
-- 教員と職員の権限分離
-- 委員会の議事運営
+## まず安全確認
 
-こうした知識は、そのままでは AI のプロンプトに乗りません。
+本文やファイルを渡す前に、資料種別、公開範囲、情報カテゴリ、処理目的、利用する AI 環境を先に確認します。判断に必要な場合でも、いきなり全文を読ませるのではなく、まずカテゴリ情報だけでトリアージします。
 
-本リポジトリは、大学現場で積み上げた判断フレームワークを skill.md 形式で公開するものです。誰でも再利用できる形に整えてあります。
+```text
+教授会資料を要約したいです。
+本文はまだ渡しません。
+資料種別、含まれそうな情報カテゴリ、AI 実行環境をもとに、入力可否の事前トリアージをしてください。
+```
 
-本リポジトリは、組織の AI エージェント (Claude for Work / Claude Code 等) にインストールする skill パッケージです。大学職員は AI エージェント経由で利用することを想定しています (SKILL.md を直接読むことも可)。
-
----
-
-## 今使えるスキル
-
-### 横断スキル（skills/）
-
-| スキル | 説明 | Version |
+| やりたいこと | 最初に使う skill | 次に使う skill |
 |---|---|---|
-| [confidential-info-guidelines](skills/confidential-info-guidelines/) | 生成AIに機密情報を入力してよいかを3レベル分類で判断する | 1.4.0 |
-| [ai-use-risk-classification](skills/ai-use-risk-classification/) | AI 利用を「禁止／限定／推奨／開放」の 4 区分で判定する | 1.1.0 |
-| [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 新任職員向け AI リテラシー入門、SD 研修コア | 1.1.0 |
-| [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 組織としての AI 導入検討チェックリストと成熟度モデル | 1.1.0 |
-| [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 委員会・教授会議事録の AI 活用判断とツール選定 | 1.1.0 |
+| 資料を AI に渡してよいか事前確認したい | [check-info-level](skills/check-info-level/) | [confidential-info-guidelines](skills/confidential-info-guidelines/) |
+| 情報区分と入力条件を整理したい | [confidential-info-guidelines](skills/confidential-info-guidelines/) | [ai-use-risk-classification](skills/ai-use-risk-classification/) |
+| 業務として AI を使ってよい範囲を決めたい | [ai-use-risk-classification](skills/ai-use-risk-classification/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
 
-### 業務領域別スキル（domain-skills/）
+## 業務別に頼む
 
-| 領域 | スキル | 説明 |
+| 業務 | 相談例 | 使う skill | 返すもの |
+|---|---|---|---|
+| 会議運営 | 委員会議事録で AI を使える範囲を整理したい | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 議題分類、利用可否、確認先、運用手順 |
+| 教務・教学 | シラバスに生成 AI 利用方針を入れたい | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | 方針レベル、文案例、周知方法 |
+| 入試 | 志望理由書での AI 使用方針を出願要項に書きたい | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | 記載方針、疑義対応、委員会確認事項 |
+| 学生対応 | 学生問い合わせを AI 回答と有人対応に分けたい | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 問い合わせ分類、エスカレーション基準、残リスク |
+| 国際 | 留学生向け案内を多言語化したい | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | 文書種別判定、確認者、翻訳手順 |
+| 研究支援 | 論文・科研費での AI 利用開示について相談された | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 開示要否、禁止事項、確認すべき規程 |
+| IR・内部質保証 | 学生アンケート自由記述を分析したい | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | 匿名化手順、分析手順、検証観点 |
+| 広報・文書 | 広報原稿や学生向け案内を公開前に確認したい | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/), [ai-tone-check](skills/ai-tone-check/) | 事実確認、読者負荷、トーン改善案 |
+
+## 組織導入・研修
+
+AI governance は独立した目的ではなく、大学業務を安全に進めるための組織整備として扱います。
+
+| やりたいこと | 使う skill | 返すもの |
 |---|---|---|
-| [academic-affairs](domain-skills/academic-affairs/) | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | シラバス AI 方針の 4 段階テンプレート |
-| academic-affairs | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | 入試書類の AI 使用可否と検知対応 |
-| [international-office](domain-skills/international-office/) | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | 留学生向け多言語化の判断と運用 |
-| [ir-analysis](domain-skills/ir-analysis/) | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | 学生調査の自由記述 AI 分析ワークフロー |
-| [public-relations](domain-skills/public-relations/) | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | 広報原稿 AI 利用 7 点チェック |
-| [research-support](domain-skills/research-support/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 論文・学位論文・科研費の AI 開示判断 |
-| [student-support](domain-skills/student-support/) | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 学生問い合わせの AI／有人対応振り分け |
+| 部署や全学の AI 利用ルールを整理したい | [ai-use-risk-classification](skills/ai-use-risk-classification/) | 禁止・限定・推奨・開放の区分案 |
+| 委員会や執行部に AI 導入を上げたい | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 成熟度診断、論点表、上程メモ |
+| 職員向け研修を作りたい | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 30-60 分研修骨子、演習、確認問題 |
 
-### スラッシュコマンド起動型スキル
+## Skill 作成・保守
 
-AI が手順を実行して成果物を返す Action skill。スラッシュコマンド `/skill-name` で起動する。
+大学業務の暗黙知を新しい skill にする場合は、[create-action-skill](skills/create-action-skill/) を使います。設計方針は [AGENTS.md](AGENTS.md)、文書形式は [references/skill-format-guide.md](references/skill-format-guide.md) を参照してください。
 
-| スキル | コマンド | 説明 |
+## 全 skill catalog
+
+| 区分 | Skill | Version |
 |---|---|---|
-| [check-info-level](skills/check-info-level/) | `/check-info-level [text or file]` | 渡されたテキスト / ファイルを Level 1/2/3 判定し、AI 入力可否と推奨次アクションを返す |
-| [create-action-skill](skills/create-action-skill/) | `/create-action-skill` | 自分の暗黙知を対話ヒアリングで SKILL.md に変換するメタスキル |
-| [ai-tone-check](skills/ai-tone-check/) | `/ai-tone-check [draft] [role]` | 広報原稿・研修教材・学生向け案内の AI 臭を subagent で 3 軸判定（top-level セッションから起動） |
+| まず安全確認 | [confidential-info-guidelines](skills/confidential-info-guidelines/) | 1.5.0 |
+| まず安全確認 | [check-info-level](skills/check-info-level/) | 1.3.0 |
+| まず安全確認 / 組織導入 | [ai-use-risk-classification](skills/ai-use-risk-classification/) | 1.2.0 |
+| 会議運営 | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 1.2.0 |
+| 文書確認 | [ai-tone-check](skills/ai-tone-check/) | 1.2.0 |
+| 組織導入・研修 | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 1.2.0 |
+| 組織導入・研修 | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 1.2.0 |
+| Skill 作成・保守 | [create-action-skill](skills/create-action-skill/) | 1.1.0 |
+| 教務・教学 | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | 1.3.0 |
+| 入試 | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | 1.2.0 |
+| 学生対応 | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 1.2.0 |
+| 国際 | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | 1.2.0 |
+| 研究支援 | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 1.3.0 |
+| IR・内部質保証 | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | 1.2.0 |
+| 広報・文書 | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | 1.2.0 |
 
-### 準備中
+準備中・非推奨 skill は [docs/roadmap.md](docs/roadmap.md) と [deprecated/](deprecated/) に移しています。
 
-| スキル | 備考 | 目標 |
-|---|---|---|
-| ai-news-curation | 情報源キュレーション | v0.5+ |
-| case-library-ai-usage | `case-studies/` ディレクトリの充実で代替 | v0.5+ |
+## 導入
 
-※ v0.3 で準備中だった `advanced-prompting-for-admin` / `ai-report-evaluation` / `tool-selection-guide` の 3 枠は v0.4 で非推奨化しました。詳細は下の「非推奨スキル」と [`deprecated/`](deprecated/) を参照。
+詳しい導入手順は [docs/install.md](docs/install.md)、AI エージェントへの頼み方は [docs/using-with-agent.md](docs/using-with-agent.md) を参照してください。
 
-### 非推奨スキル（deprecated/）
+Claude Code で個別 skill を入れる例:
 
-機能が既存スキルに吸収されたため非推奨となった枠を [`deprecated/`](deprecated/) に保存しています。
+```bash
+git clone https://github.com/gmoriki/higher-ed-ai-skills.git
+mkdir -p ~/.claude/skills/
+cp -R higher-ed-ai-skills/skills/check-info-level \
+  ~/.claude/skills/higher-ed-check-info-level
+```
 
-| 非推奨スキル | 代替スキル |
-|---|---|
-| [advanced-prompting-for-admin](deprecated/advanced-prompting-for-admin/) | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) |
-| [ai-report-evaluation](deprecated/ai-report-evaluation/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) + [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) |
-| [tool-selection-guide](deprecated/tool-selection-guide/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
+導入後は、実データではなく架空の資料カテゴリで動作確認してください。
 
----
+## 安全と限界
 
-## 読者別の最短ルート
-
-| あなたが | 最初に開くべき |
-|---|---|
-| 大学職員で、実務で使いたい | [confidential-info-guidelines](skills/confidential-info-guidelines/SKILL.md) |
-| 導入検討委員会の資料を作りたい | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/SKILL.md) |
-| 新任 SD 研修を組みたい | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/SKILL.md) |
-| コンサルタントや研究者 | [AGENTS.md](AGENTS.md) |
-| 英語で読みたい | [README.en.md](README.en.md) |
-| GitHub に慣れていない | [docs/how-to-use.md](docs/how-to-use.md) |
-
----
-
-## 使い方
-
-主な使い方は4つあります。
-
-1. **そのまま読む** — SKILL.md を開き、判断フローに沿って業務判断に使う
-2. **AIアシスタントに読ませる** — Claude、ChatGPT、Microsoft Copilot などの指示文やナレッジに貼り付ける
-3. **スラッシュコマンドで起動する** — Claude Code に組み込み、`/check-info-level <path>` のように直接呼び出して成果物を得る
-4. **研修教材にする** — CC BY-SA 4.0 の範囲で改変・再配布できる
-
-詳しい手順は [docs/how-to-use.md](docs/how-to-use.md) を参照してください。GitHub アカウントがなくても利用できます。
-
----
-
-## Runtime Adapters
-
-AI ランタイムごとの組み込み方法を [`runtime-adapters/`](runtime-adapters/) にまとめています。
-
-| ランタイム | ガイド | 状態 |
-|---|---|---|
-| Claude Code | [claude-code.md](runtime-adapters/claude-code.md) | 利用可 |
-| ChatGPT (Custom GPT) | — | 予定 |
-| Microsoft Copilot | — | 予定 |
-| GitHub Copilot | — | 予定 |
-| ローカル LLM | — | 予定 |
-
----
-
-## ライセンスと免責
-
-本リポジトリのコンテンツはすべて [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) の下で自由に使えます。改変して再配布する場合は、同じライセンスで共有してください。
-
-本リポジトリは情報提供を目的としたものであり、法的助言ではありません。実際の業務判断は、所属大学の規程および担当部署の指示に従ってください。
-
----
+- 所属大学の規程、情報セキュリティポリシー、個人情報保護規程、AI 利用ガイドラインが常に優先されます。
+- 本リポジトリは法的助言ではありません。
+- 学生個人情報、成績、相談記録、人事、入試、未公表研究データは、本文やファイルを渡す前に入力可否を確認してください。
+- 外部 AI サービスにファイルをアップロードする前に、契約形態、学習利用、保存期間、削除手順を確認してください。
 
 ## 関連ドキュメント
 
-- [AGENTS.md](AGENTS.md) — 設計思想と 6 原則 (旧 DESIGN.md、v0.7 でリネーム)
+- [docs/install.md](docs/install.md) — インストール手順
+- [docs/using-with-agent.md](docs/using-with-agent.md) — AI エージェントへの頼み方
+- [docs/manual-reading.md](docs/manual-reading.md) — GitHub 上で直接読む場合
+- [docs/update-policy.md](docs/update-policy.md) — 鮮度管理とバージョニング
+- [docs/roadmap.md](docs/roadmap.md) — 次に整備する領域
+- [runtime-adapters/claude-code.md](runtime-adapters/claude-code.md) — Claude Code 向け詳細
+- [AGENTS.md](AGENTS.md) — 設計思想と AI コントリビューター向けガイド
+- [references/skill-format-guide.md](references/skill-format-guide.md) — skill 作成・改修の標準
 - [CONTRIBUTING.md](CONTRIBUTING.md) — 貢献ガイド
 - [CHANGELOG.md](CHANGELOG.md) — 変更履歴
-- [docs/update-policy.md](docs/update-policy.md) — スキルの更新ポリシー
 
----
+## ライセンス
+
+本リポジトリのコンテンツは [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) で公開しています。改変して再配布する場合も同じライセンスで共有してください。
 
 ## 著者
 
 森木銀河 (Ginga Moriki)
 
-大学職員研修、ガイドライン策定支援、AI導入アドバイザリーを提供しています。
-
-本リポジトリのコンテンツは無料で使えます。大学固有の稟議フローへの適用や研修プログラムは、別途有料で提供しています。
+大学職員研修、ガイドライン策定支援、AI 導入アドバイザリーを提供しています。
 
 - [gmoriki.com](https://gmoriki.com)
 - [note](https://note.com/pogohopper8)

@@ -1,135 +1,104 @@
 # higher-ed-ai-skills
 
-Open-source AI skills for higher education administration, structured as skill.md files.
+Agent Skills for Japanese higher education staff who want to delegate university work to AI agents.
+
+The skills help agents support academic affairs, student support, research administration, IR, public relations, international office work, committee operations, staff training, and document review while respecting university-specific rules, authority, information handling, and approval paths.
 
 [日本語](README.md)
 
----
+## What This Is
 
-## What is this?
+University administration depends on context that is rarely written down: committee norms, approval routes, faculty-staff authority boundaries, student data handling, academic calendars, and department-specific practice.
 
-Between Japanese university operations and generative AI, translation is often required.
+This repository publishes that operational knowledge as `SKILL.md` files. The direct reader is an AI agent. University staff should usually ask the agent in natural language and let it invoke the relevant skill.
 
-Universities carry a large body of undocumented tacit knowledge.
+## Start With Input Preflight
 
-- How proposals are moved through committees
-- Exceptions in the academic calendar
-- Separation of authority between faculty and staff
-- The quiet protocols of meeting governance
+Before sharing document text or files, ask the agent to triage document type, intended use, likely information categories, publication scope, and AI runtime conditions.
 
-This knowledge does not transfer naturally to AI prompts. This repository publishes decision frameworks built from real higher ed work, packaged as `skill.md` files that anyone can reuse.
+```text
+I want to summarize a faculty meeting packet.
+Do not open or read the file yet.
+First triage whether this can be given to an AI agent based only on document type, likely information categories, purpose, and runtime.
+```
 
----
-
-## Available skills
-
-### Cross-cutting skills (skills/)
-
-| Skill | Description | Version |
+| Need | Start with | Then use |
 |---|---|---|
-| [confidential-info-guidelines](skills/confidential-info-guidelines/) | A three-level classification framework for deciding whether confidential information can be fed into generative AI | 1.2.0 |
-| [ai-use-risk-classification](skills/ai-use-risk-classification/) | Four-tier AI usage judgment (prohibited / limited / recommended / open) | 1.0.0 |
-| [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | AI literacy primer for new admin staff, core material for SD training | 1.0.0 |
-| [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | Checklist and maturity model for institutional AI adoption reviews | 1.0.0 |
-| [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | Judgment and tool-selection framework for AI-assisted meeting minutes | 1.0.0 |
+| Check whether material can be shared with an AI agent | [check-info-level](skills/check-info-level/) | [confidential-info-guidelines](skills/confidential-info-guidelines/) |
+| Classify information and input conditions | [confidential-info-guidelines](skills/confidential-info-guidelines/) | [ai-use-risk-classification](skills/ai-use-risk-classification/) |
+| Decide where AI can be used in a business process | [ai-use-risk-classification](skills/ai-use-risk-classification/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
 
-### Domain-specific skills (domain-skills/)
+## Choose By Work
 
-| Domain | Skill | Description |
+| Work | Example request | Skill | Output |
+|---|---|---|---|
+| Committees | Decide where AI can help with committee minutes | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | Agenda risk, allowed use, confirmation path, workflow |
+| Academic affairs | Add an AI use policy to a syllabus | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | Policy level, sample wording, student communication |
+| Admissions | Write an AI use policy for application documents | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | Policy options, suspected-use process, committee checks |
+| Student support | Split student inquiries into AI-answerable and human-handled cases | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | Inquiry classes, escalation rules, residual risk |
+| International office | Prepare multilingual guidance for international students | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | Document type, reviewers, translation workflow |
+| Research support | Answer questions about AI disclosure in papers or grants | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | Disclosure need, prohibited uses, policy checks |
+| IR and quality assurance | Analyze free-text student survey responses | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | Anonymization, analysis steps, validation checks |
+| PR and documents | Review public-facing copy or student notices | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/), [ai-tone-check](skills/ai-tone-check/) | Fact checks, reader load, tone edits |
+
+## Institutional Enablement
+
+AI governance is not the repository's main identity. It is treated as organizational enablement for doing university work responsibly.
+
+| Need | Skill | Output |
 |---|---|---|
-| [academic-affairs](domain-skills/academic-affairs/) | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | Four-level syllabus AI-policy template |
-| academic-affairs | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | Admissions document AI usage and detection handling |
-| [international-office](domain-skills/international-office/) | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | Multilingual communication for international students |
-| [ir-analysis](domain-skills/ir-analysis/) | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | Free-form student-survey text analysis workflow |
-| [public-relations](domain-skills/public-relations/) | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | Seven-point AI-use checklist for PR copy |
-| [research-support](domain-skills/research-support/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | AI-use disclosure judgment for papers, theses, and grants |
-| [student-support](domain-skills/student-support/) | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | AI vs human triage for student inquiries |
+| Define departmental or institution-wide AI use rules | [ai-use-risk-classification](skills/ai-use-risk-classification/) | Prohibited / limited / recommended / open use categories |
+| Bring an AI adoption proposal to a committee or executive body | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | Maturity diagnosis, discussion points, executive memo |
+| Build a staff training session | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 30-60 minute training plan, exercise, check questions |
 
-### Coming soon
+## Skill Authoring
 
-| Skill | Note | Target |
+Use [create-action-skill](skills/create-action-skill/) when turning local university work know-how into a new skill. Contributors should follow [AGENTS.md](AGENTS.md) and [references/skill-format-guide.md](references/skill-format-guide.md).
+
+## Full Catalog
+
+| Category | Skill | Version |
 |---|---|---|
-| ai-news-curation | Information-source curation | v0.5+ |
-| case-library-ai-usage | Covered by expanded `case-studies/` directory | v0.5+ |
+| Input preflight | [confidential-info-guidelines](skills/confidential-info-guidelines/) | 1.5.0 |
+| Input preflight | [check-info-level](skills/check-info-level/) | 1.3.0 |
+| Input preflight / enablement | [ai-use-risk-classification](skills/ai-use-risk-classification/) | 1.2.0 |
+| Committees | [committee-meeting-minutes-ai](skills/committee-meeting-minutes-ai/) | 1.2.0 |
+| Document review | [ai-tone-check](skills/ai-tone-check/) | 1.2.0 |
+| Institutional enablement | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) | 1.2.0 |
+| Institutional enablement | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) | 1.2.0 |
+| Skill authoring | [create-action-skill](skills/create-action-skill/) | 1.1.0 |
+| Academic affairs | [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) | 1.3.0 |
+| Admissions | [entrance-exam-ai-policy](domain-skills/academic-affairs/entrance-exam-ai-policy/) | 1.2.0 |
+| Student support | [student-inquiry-triage](domain-skills/student-support/student-inquiry-triage/) | 1.2.0 |
+| International office | [multilingual-student-communication](domain-skills/international-office/multilingual-student-communication/) | 1.2.0 |
+| Research support | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) | 1.3.0 |
+| IR and quality assurance | [ir-freeform-text-analysis](domain-skills/ir-analysis/ir-freeform-text-analysis/) | 1.2.0 |
+| Public relations | [pr-ai-checklist](domain-skills/public-relations/pr-ai-checklist/) | 1.2.0 |
 
-※ The three slots previously listed as coming-soon (`advanced-prompting-for-admin` / `ai-report-evaluation` / `tool-selection-guide`) were deprecated in v0.4. See the "Deprecated skills" section below and [`deprecated/`](deprecated/).
+See [docs/roadmap.md](docs/roadmap.md) for planned areas and [deprecated/](deprecated/) for retired skills.
 
-### Deprecated skills (deprecated/)
+## Install
 
-Slots whose function has been absorbed by existing skills are preserved under [`deprecated/`](deprecated/).
+See [docs/install.md](docs/install.md) for installation and [docs/using-with-agent.md](docs/using-with-agent.md) for request patterns.
 
-| Deprecated skill | Replacement |
-|---|---|
-| [advanced-prompting-for-admin](deprecated/advanced-prompting-for-admin/) | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/) |
-| [ai-report-evaluation](deprecated/ai-report-evaluation/) | [research-integrity-ai-disclosure](domain-skills/research-support/research-integrity-ai-disclosure/) + [syllabus-ai-policy](domain-skills/academic-affairs/syllabus-ai-policy/) |
-| [tool-selection-guide](deprecated/tool-selection-guide/) | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/) |
+Claude Code example:
 
----
+```bash
+git clone https://github.com/gmoriki/higher-ed-ai-skills.git
+mkdir -p ~/.claude/skills/
+cp -R higher-ed-ai-skills/skills/check-info-level \
+  ~/.claude/skills/higher-ed-check-info-level
+```
 
-## Where to start
+Use fictional data or document categories for initial testing. Do not test with real student, personnel, admissions, or unpublished research data.
 
-| If you are | Start here |
-|---|---|
-| University staff looking for practical use | [confidential-info-guidelines](skills/confidential-info-guidelines/SKILL.md) |
-| Preparing an AI adoption committee | [institutional-ai-adoption-checklist](skills/institutional-ai-adoption-checklist/SKILL.md) |
-| Building an SD training for new staff | [staff-ai-literacy-primer](skills/staff-ai-literacy-primer/SKILL.md) |
-| A consultant or researcher | [AGENTS.md](AGENTS.md) |
-| A Japanese reader | [README.md](README.md) |
-| New to GitHub | [docs/how-to-use.md](docs/how-to-use.md) |
+## Safety And Limits
 
----
+- Your institution's rules, information security policy, privacy policy, and AI use guidelines always take precedence.
+- This repository is not legal advice.
+- Before sharing student information, grades, advising records, personnel information, admissions material, or unpublished research data, triage input permissibility first.
+- Before uploading files to external AI services, confirm contract type, training use, retention, and deletion procedures.
 
-## How to use
+## License
 
-There are three common ways to use these skills.
-
-1. **Read them directly** — open `SKILL.md` and follow the decision flow in real-world judgment calls
-2. **Feed them into an AI assistant** — paste as a system prompt or knowledge file in Claude, ChatGPT, or Microsoft Copilot
-3. **Adapt them into training materials** — remix freely under CC BY-SA 4.0
-
-See [docs/how-to-use.md](docs/how-to-use.md) for details. No GitHub account is required.
-
----
-
-## Runtime Adapters
-
-Integration guides for AI runtimes are under [`runtime-adapters/`](runtime-adapters/). Claude Code is the first adapter, added in v0.4.
-
-| Runtime | Guide | Status |
-|---|---|---|
-| Claude Code | [claude-code.md](runtime-adapters/claude-code.md) | v0.4 first release |
-| ChatGPT (Custom GPT) | — | v0.5+ planned |
-| Microsoft Copilot | — | v0.5+ planned |
-| GitHub Copilot | — | v0.5+ planned |
-| Local LLMs | — | v0.5+ planned |
-
----
-
-## License and disclaimer
-
-All content in this repository is freely usable under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). When you redistribute adaptations, share them under the same license.
-
-This repository is provided for informational purposes only and does not constitute legal advice. For operational decisions, follow the rules and instructions of your institution.
-
----
-
-## Related documents
-
-- [AGENTS.md](AGENTS.md) — Design philosophy and the six principles (renamed from DESIGN.md in v0.7)
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
-- [CHANGELOG.md](CHANGELOG.md) — Release history
-- [docs/update-policy.md](docs/update-policy.md) — Skill update policy
-
----
-
-## Author
-
-Ginga Moriki
-
-Works at the intersection of higher education administration and AI adoption in Japan. Delivers staff training, supports institutional policy drafting, and advises on AI implementation.
-
-The content of this repository is free to use. Paid advisory services — adapting the frameworks to specific governance structures, running training programs — are offered separately.
-
-- [gmoriki.com](https://gmoriki.com)
-- [note (Japanese)](https://note.com/pogohopper8)
-- [GitHub](https://github.com/gmoriki)
+Repository content is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
